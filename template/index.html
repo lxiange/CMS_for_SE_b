@@ -1,0 +1,27 @@
+{%extends 'main.html'%}  
+{%block header%}  
+<ul class='nav nav-pills'>  
+    <li><a href='/' class='h4 text-primary'>首页</a></li>  
+    <li><a href='/member' class='h4 text-primary'>成员</a></li>  
+    <li><a href='/chat/1' class='h4 text-primary'>群聊</a></li>  
+    
+    <form action='/' method='post' class='form-inline'>  
+        <div class='form-group'>  
+            <label class='sr-only'>用户名</label>  
+            <input type='text' name='username' class='form-control' placeholder='用户名'/>  
+        </div>  
+        <div class='form-group'>  
+            <label class='sr-only'>密码</label>  
+            <input type='password' name='password' class='form-control' placeholder='密码'/>  
+        </div>  
+        <button type='submit' class='btn btn-success'>登录</button>  
+        <a href='/register'>无帐号，请点击注册</a>  
+    </form>  
+
+</ul>  
+{%end%}  
+{%block content%}  
+<ul>  
+
+</ul>  
+{%end%}  

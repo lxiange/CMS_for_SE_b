@@ -99,3 +99,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# My rules
+*.exe
+*.db
+*.db3
