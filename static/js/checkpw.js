@@ -1,3 +1,3 @@
 function checkpw(){
-    alert('fuck you!');
+    // alert('fuck you!');
 }
