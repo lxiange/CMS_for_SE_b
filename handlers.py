@@ -3,11 +3,14 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 
+from dao import db
+
+
 class logoutHandler(tornado.web.RequestHandler):
     """docstring for logoutHandler"""
 
     def get(self):
-        self.clear_cookie('hackerName')
+        self.clear_cookie('stuID')
         self.redirect('/')
 
 
@@ -15,7 +18,7 @@ class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
         self.render('index.html', cookieName=self.get_cookie(
-            'hackerName'), blogs=[])
+            'stuID'), blogs=[])
     # def post(self):
     #     name = self.get_argument('username')
     #     passwd = self.get_argument('password')
@@ -25,7 +28,7 @@ class indexHandler(tornado.web.RequestHandler):
     #         # self.redirect('/register')
     #     else:
     #         self._insert_into_db(name, passwd)
-    #         self.set_cookie('hackerName', name)
+    #         self.set_cookie('stuID', name)
     #         # self.write('good!')
     #         self.redirect('/')
 
@@ -35,31 +38,7 @@ class registerHandler(tornado.web.RequestHandler):
     handle regist information
     """
 
-    def __init__(self, *args, **kwargs):
-        super(registerHandler, self).__init__(*args, **kwargs)
-        self.conn = sqlite3.connect('data.db')
-        self.cur = self.conn.cursor()
-        self.cur.execute('CREATE TABLE IF NOT EXISTS\
-                         user(username VARCHAR(20) UNIQUE,\
-                         password VARCHAR(32),\
-                         user_type VARCHAR(32))')
 
-    def _is_in_db(self, username):
-        '''check if username in table user'''
-        self.cur.execute("SELECT * FROM user WHERE username = '%s'" % username)
-        res = self.cur.fetchall()
-        if res:
-            return True
-        else:
-            return False
-
-    def _insert_into_db(self, username, passwd, user_type='stu'):
-        '''Insert user to db'''
-        assert not self._is_in_db(username)
-
-        self.cur.execute("INSERT INTO user VALUES ('%s','%s','%s')" %
-                         (username, passwd, user_type))
-        self.conn.commit()
 
     def get(self):
         self.render('register.html')
@@ -67,12 +46,13 @@ class registerHandler(tornado.web.RequestHandler):
     def post(self):
         name = self.get_argument('username')
         passwd = self.get_argument('password')
-        res = self._is_in_db(name)
+        njuid=self.get_argument('njuid')
+        res = db.target_in_user(name,'username')
         if res:  # 用户名已存在
             self.write('user name comflict')
             # self.redirect('/register')
         else:
-            self._insert_into_db(name, passwd)
-            self.set_cookie('hackerName', name)
+            db.insert_into_user(name, passwd,njuid)
+            self.set_cookie('stuID', name)
             # self.write('good!')
             self.redirect('/')

@@ -3,17 +3,18 @@ This is the app.
 """
 import os.path
 import random
+import sqlite3
 
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
 
-import sqlite3
-
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
 
+
+from handlers import *
 
 class MyApp(tornado.web.Application):
     """docstring for MyApp"""
