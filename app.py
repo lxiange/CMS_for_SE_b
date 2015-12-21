@@ -26,6 +26,7 @@ class MyApp(tornado.web.Application):
             # (r'/chat/(\d+)',chatHandler),
             (r'/register', registerHandler),
             (r'/logout', logoutHandler),
+            (r'/setting/(\w+)',settingHandler),
             # (r'/post',postHandler),
             # (r'/user/(\w+)',userHandler),
             # (r'/blog/(\d+)',blogHandler),

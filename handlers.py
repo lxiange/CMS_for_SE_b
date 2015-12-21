@@ -44,6 +44,7 @@ class registerHandler(tornado.web.RequestHandler):
         name = self.get_argument('username')
         passwd = self.get_argument('password')
         njuid = self.get_argument('njuid')
+
         res = db.target_in_user(name, 'username')
         if res:  # 用户名已存在
             self.write('user name comflict')
@@ -52,4 +53,22 @@ class registerHandler(tornado.web.RequestHandler):
             db.insert_into_user(name, passwd, njuid)
             self.set_cookie('stuID', name)
             # self.write('good!')
-            self.redirect('/')
+            self.redirect('/setting/info')
+
+
+class settingHandler(tornado.web.RequestHandler):
+
+    def get(self, para):
+        selfid = self.get_cookie('stuID')
+        # selfmail = fetchMail(selfid)
+        # selfname = fetchName(selfid)
+        # info = showUser(selfname)
+        # sex = info[4]
+        # birthday = info[5]
+        # city = info[6]
+        # intro = info[7]
+        if para == 'info':
+            self.render('setting.html', userMail="selfmail", cookieName="selfname",
+                        sex="sex", birthday="birthday", city="city", intro="intro", sameMail=False)
+        elif para == 'pw':
+            self.render('pw.html', cookieName=selfname, sameOldPw=True)

@@ -7,6 +7,7 @@ import sqlite3
 class DaoBase():
     """docstring for DaoBase"""
 
+
     def __init__(self, arg):
         super(DaoBase, self).__init__()
         self.db_name = arg
@@ -23,6 +24,8 @@ class DaoBase():
             VALUES (1000,'root','root','131220088','root', NULL)")
 
         # TODO: if db has existed do not insert.
+
+
 
     def target_in_user(self, target, col_name='username'):
         '''check if target in table user'''
