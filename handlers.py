@@ -17,7 +17,9 @@ class logoutHandler(tornado.web.RequestHandler):
 class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.render('index.html', cookieName=self.get_cookie('stuID'), blogs=[])
+        self.render('index.html', cookieName=self.get_cookie('stuID'),
+                    blogs=db.fetch_all_article(),
+                    announcements=db.fetch_all_announcement())
     # def post(self):
     #     name = self.get_argument('username')
     #     passwd = self.get_argument('password')
@@ -59,16 +61,11 @@ class registerHandler(tornado.web.RequestHandler):
 class settingHandler(tornado.web.RequestHandler):
 
     def get(self, para):
-        selfid = self.get_cookie('stuID')
-        # selfmail = fetchMail(selfid)
-        # selfname = fetchName(selfid)
-        # info = showUser(selfname)
-        # sex = info[4]
-        # birthday = info[5]
-        # city = info[6]
-        # intro = info[7]
+        username = self.get_cookie('stuID')
+        userinfo = db.fetch_user_info(username)[0]
+
         if para == 'info':
-            self.render('setting.html', userMail="selfmail", cookieName="selfname",
-                        sex="sex", birthday="birthday", city="city", intro="intro", sameMail=False)
-        elif para == 'pw':
-            self.render('pw.html', cookieName=selfname, sameOldPw=True)
+            self.render('setting.html', userMail=userinfo[5], cookieName=userinfo[1],
+                        sex=None, birthday=None, city=None, intro=None)
+        # elif para == 'pw':
+        #     self.render('pw.html', cookieName=username, sameOldPw=True)

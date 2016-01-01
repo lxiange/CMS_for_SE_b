@@ -26,11 +26,15 @@
 {%block content%}
 <ul>
     {%if cookieName%}
-    <li>hello world!</li>
+    <!-- <li>Loged in</li> -->
     {%else%}
     {%end%}
     {%for i in blogs%}
-    <li><a href='/user/{{i[1]}}' class='text-success h4'>【{{i[1]}}】</a><a href='/blog/{{i[0]}}' class='text-primary h3'>{{i[2]}}</a></p><p class='text-muted h6'>{{i[3]}}</p></li>
+    <li><a href='/user/{{i[2]}}' class='text-success h4'>{{i[2]}}: </a><a href='/blog/{{i[2]}}' class='text-primary h3'>{{i[1]}}</a></p><p class='text-muted h6'>{{i[3]}}</p></li>
+    <br/>
+    {%end%}
+    {%for i in announcements%}
+    <li><a href='/user/{{i[2]}}' class='text-success h4'>{{i[2]}}: </a><p class='text-primary h3'>{{i[1]}}</p><p class='text-muted h6'>{{i[3]}}</p></li>
     <br/>
     {%end%}
 </ul>

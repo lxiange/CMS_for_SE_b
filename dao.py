@@ -7,25 +7,11 @@ import sqlite3
 class DaoBase():
     """docstring for DaoBase"""
 
-
     def __init__(self, arg):
         super(DaoBase, self).__init__()
         self.db_name = arg
         self.conn = sqlite3.connect(self.db_name)
         self.cur = self.conn.cursor()
-        self.cur.execute('CREATE TABLE IF NOT EXISTS\
-                         user(user_id INTEGER PRIMARY KEY AUTOINCREMENT,\
-                         username VARCHAR(32) UNIQUE,\
-                         password VARCHAR(32),\
-                         njuid VARCHAR(20),\
-                         user_type VARCHAR(32),\
-                         e_mail VARCHAR(64))')
-        self.cur.execute("INSERT INTO user \
-            VALUES (1000,'root','root','131220088','root', NULL)")
-
-        # TODO: if db has existed do not insert.
-
-
 
     def target_in_user(self, target, col_name='username'):
         '''check if target in table user'''
@@ -45,5 +31,34 @@ class DaoBase():
             VALUES ('%s','%s','%s','%s')" % (u_name, passwd, njuid, user_type))
         self.conn.commit()
 
+    def fetch_user_info(self, username):
+        self.cur.execute("SELECT * FROM user WHERE username = '%s'" % username)
+        res = self.cur.fetchall()
+        assert len(res) <= 1
+        return res
+
+    def fetch_article(self, author_name):
+        self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_all_article(self):
+        self.cur.execute("SELECT * FROM article")
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_announcement(self, author_name):
+        self.cur.execute("SELECT * FROM announcement WHERE author = '%s'" % author_name)
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_all_announcement(self):
+        self.cur.execute("SELECT * FROM announcement")
+        res = self.cur.fetchall()
+        return res
+#TODO(lxiange): split DaoBase
 
 db = DaoBase('data.db3')
+
+if __name__ == '__main__':
+    print(db.fetch_article('root'))
