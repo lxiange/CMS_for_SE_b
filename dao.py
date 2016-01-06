@@ -63,17 +63,33 @@ class ArticleDao(DaoBase):
             (use fetchmany())
             return the list of articles.
         '''
+        self.cur.execute("SELECT * FROM article")
+        res=self.cur.fetchall()
+        return res
 
-    def fetch_article(self, username):
+
+    def fetch_article(self, author_name):
         '''fetch someone's articles
             return the list of articles.
         '''
+        self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
+        res = self.cur.fetchall()
+        return res
 
-    def insert(self, *arg, **kw):
+
+    def insert(self, *args):
         '''insert an article
             no return.
             raise exceptions.
         '''
+        try:
+            self.cur.execute("INSERT INTO article (title, author, content, date_, author_id)"
+                             "VALUES (?, ?, ?, ?,?)", args)
+            return True
+        except:
+            return False
+        finally:
+            self.conn.commit()
 
 
 class MessageDao(DaoBase):
