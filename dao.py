@@ -4,6 +4,7 @@ An operator for operate database
 import sqlite3
 import time
 
+
 class DaoBase():
     """docstring for DaoBase"""
 
@@ -103,11 +104,11 @@ class ArticleDao(DaoBase):
         res = self.cur.fetchall()
         return res
 
-    def fetch_article(self, author_name):
+    def fetch_articles(self, author_name):
         '''fetch someone's articles
             return the list of articles.
         '''
-        self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
+        self.cur.execute("SELECT * FROM article WHERE author = ?", (author_name,))
         res = self.cur.fetchall()
         return res
 
@@ -121,6 +122,7 @@ class ArticleDao(DaoBase):
                              "VALUES (?, ?, ?, ?,?)", args)
             return True
         except:
+            assert 0
             return False
         finally:
             self.conn.commit()
@@ -139,11 +141,12 @@ class AnnouncementDao(DaoBase):
     def __init__(self, arg):
         super(AnnouncementDao, self).__init__(arg)
 
-    def fetch_anno(self,date_):
+    def fetch_announcement(self, date_):
         '''fetch the announcement of _date
+            TODO(lxiange): select announcement by date is useless...
         '''
-        self.cur.execute("SELECT * FROM announcement where date_=?",(date_,))
-        res=self.cur.fetchone()
+        self.cur.execute("SELECT * FROM announcement where date_ = ?", (date_,))
+        res = self.cur.fetchone()
         return res
 
     def fetch_all(self):
@@ -151,22 +154,21 @@ class AnnouncementDao(DaoBase):
            return the list  of articles.
         '''
         self.cur.execute("SELECT * FROM announcement")
-        res = self.cur.fetchone()
+        res = self.cur.fetchall()
         return res
 
-    def insert(self,*args,**kw):
+    def insert(self, *args, **kw):
         '''insert an Announcement
         '''
         try:
-            self.cur.execute("INSERT INTO announcement(title, author, content,date_,author_id)"
-                             "VALUES (?, ?, ?, ?)", args) 
+            self.cur.execute("INSERT INTO announcement(title, author, content, date_, author_id)"
+                             "VALUES (?, ?, ?, ?, ?)", args)
             return True
         except:
+            assert 0
             return False
         finally:
             self.conn.commit()
-    
-
 
 
 class AdminDao(DaoBase):
@@ -176,7 +178,6 @@ class AdminDao(DaoBase):
         super(AdminDao, self).__init__(arg)
 
     def post_announcement(self, *args, **kw):
-
         '''post_announcement'''
 
     def delete_user(self, username):
@@ -195,5 +196,6 @@ ui = UserInfo('data.db3')
 dv = AnnouncementDao('data.db3')
 
 if __name__ == '__main__':
-    dv.insert('test', 'lu', 'all4test', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),1)
+    dv.insert('test', 'lu', 'all4test', time.strftime(
+        "%Y-%m-%d %H:%M:%S", time.localtime()), 1)
     print(dv.fetch_all())
