@@ -38,7 +38,7 @@ cur.execute("CREATE TABLE announcement(announcement_id INTEGER PRIMARY KEY AUTOI
 cur.execute("INSERT INTO announcement \
     VALUES (1000,'announcement title','root','Hello! It is  a test!','fuck_time', 1000)")
 
-# todo : create table user infomation
+# todo : create table user detail infomation
 
 conn.commit()
 conn.close()

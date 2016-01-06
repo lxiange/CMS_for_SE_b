@@ -16,6 +16,7 @@ define("port", default=8000, help="run on the given port", type=int)
 
 from handlers import *
 
+
 class MyApp(tornado.web.Application):
     """docstring for MyApp"""
 
@@ -26,7 +27,11 @@ class MyApp(tornado.web.Application):
             # (r'/chat/(\d+)',chatHandler),
             (r'/register', registerHandler),
             (r'/logout', logoutHandler),
-            (r'/setting/(\w+)',settingHandler),
+            (r'/setting/(\w+)', settingHandler),
+            (r'/manage', manageHandler),
+            (r'/homework/(\w+)', homeworkHandler),
+            (r'/submit/(\w+)', submitHomeworkHandler),
+            (r'/announcement', announcementHandler),
             # (r'/post',postHandler),
             # (r'/user/(\w+)',userHandler),
             # (r'/blog/(\d+)',blogHandler),
@@ -39,7 +44,6 @@ class MyApp(tornado.web.Application):
         }
         super().__init__(handlers, **settings)
         # super().__init__()
-
 
 
 if __name__ == '__main__':

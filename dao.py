@@ -11,6 +11,7 @@ class DaoBase():
         super(DaoBase, self).__init__()
         self.db_name = arg
         self.conn = sqlite3.connect(self.db_name)
+        self.conn.row_factory = sqlite3.Row
         self.cur = self.conn.cursor()
 
     def target_in_user(self, target, col_name='username'):
@@ -48,7 +49,8 @@ class DaoBase():
         return res
 
     def fetch_announcement(self, author_name):
-        self.cur.execute("SELECT * FROM announcement WHERE author = '%s'" % author_name)
+        self.cur.execute(
+            "SELECT * FROM announcement WHERE author = '%s'" % author_name)
         res = self.cur.fetchall()
         return res
 
@@ -56,9 +58,89 @@ class DaoBase():
         self.cur.execute("SELECT * FROM announcement")
         res = self.cur.fetchall()
         return res
-#TODO(lxiange): split DaoBase
+# TODO(lxiange): split DaoBase
+
+
+class UserDao(DaoBase):
+    """docstring for UserDao"""
+
+    def __init__(self, arg):
+        super(UserDao, self).__init__(arg)
+
+    def check_pass(self, username, password):
+        '''check if user exists
+            return None or userinfo.
+        '''
+
+    def user_exist(self, username):
+        '''check if username exists
+            return True or False
+        '''
+
+    def insert(self, *args, **kw):
+        '''insert userinfo into table user
+            no return.
+            raise exception.
+        '''
+
+
+class ArticleDao(DaoBase):
+    """docstring for ArticleDao"""
+
+    def __init__(self, arg):
+        super(ArticleDao, self).__init__(arg)
+
+    def fetch_all(self):
+        '''fetch all articles.
+            (use fetchmany())
+            return the list of articles.
+        '''
+
+    def fetch_article(self, username):
+        '''fetch someone's articles
+            return the list of articles.
+        '''
+
+    def insert(self, *arg, **kw):
+        '''insert an article
+            no return.
+            raise exceptions.
+        '''
+
+
+class MessageDao(DaoBase):
+    """docstring for MessageDao"""
+
+    def __init__(self, arg):
+        super(MessageDao, self).__init__(arg)
+
+
+class AnnouncementDao(DaoBase):
+    """docstring for AnnouncementDao"""
+
+    def __init__(self, arg):
+        super(AnnouncementDao, self).__init__(arg)
+
+
+class AdminDao(DaoBase):
+    """docstring for AdminDao"""
+
+    def __init__(self, arg):
+        super(AdminDao, self).__init__(arg)
+
+    def post_announcement(self, *args, **kw):
+        '''post_announcement'''
+
+    def delete_user(self, username):
+        '''delete_user'''
+
+    def delete_announcement(self, username):
+        '''delete_announcement'''
+
+    def delete_article(self, article_id):
+        '''delete_article'''
 
 db = DaoBase('data.db3')
 
 if __name__ == '__main__':
-    print(db.fetch_article('root'))
+    print(db.fetch_article('root')[0]['title'])
