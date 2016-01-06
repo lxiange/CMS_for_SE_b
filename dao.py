@@ -100,9 +100,8 @@ class ArticleDao(DaoBase):
             return the list of articles.
         '''
         self.cur.execute("SELECT * FROM article")
-        res=self.cur.fetchall()
+        res = self.cur.fetchall()
         return res
-
 
     def fetch_article(self, author_name):
         '''fetch someone's articles
@@ -111,7 +110,6 @@ class ArticleDao(DaoBase):
         self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
         res = self.cur.fetchall()
         return res
-
 
     def insert(self, *args):
         '''insert an article
