@@ -42,14 +42,50 @@ class UserDao(DaoBase):
         '''insert userinfo into table user
             raise exception.
         '''
+        assert not self.user_exist(args[0])
         try:
             self.cur.execute("INSERT INTO user (username, password, njuid, user_type)"
                              "VALUES (?, ?, ?, ?)", args)
             return True
         except:
+            assert 0
             return False
         finally:
             self.conn.commit()
+
+    def fetch(self, username):
+        self.cur.execute("SELECT * FROM user WHERE username = ?", (username,))
+        res = self.cur.fetchone()
+        assert res
+        return res
+
+
+class UserInfo(DaoBase):
+    """docstring for UserInfo"""
+
+    def __init__(self, arg):
+        super(UserInfo, self).__init__(arg)
+
+    def insert(self, *args, **kw):
+        try:
+            self.cur.execute("INSERT INTO user_info "
+                             "(username, sex, e_mail, birthday, mobile, self_intro)"
+                             "VALUES (?, ?, ?, ?, ?, ?)", args)
+            return True
+        except:
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
+    def fetch(self, username):
+        self.cur.execute("SELECT * FROM user_info WHERE username = ?", (username,))
+        res = self.cur.fetchone()
+        assert res
+        return res
+
+    def update(self, *args, **kw):
+        '''update'''
 
 
 class ArticleDao(DaoBase):
@@ -63,17 +99,33 @@ class ArticleDao(DaoBase):
             (use fetchmany())
             return the list of articles.
         '''
+        self.cur.execute("SELECT * FROM article")
+        res=self.cur.fetchall()
+        return res
 
-    def fetch_article(self, username):
+
+    def fetch_article(self, author_name):
         '''fetch someone's articles
             return the list of articles.
         '''
+        self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
+        res = self.cur.fetchall()
+        return res
 
-    def insert(self, *arg, **kw):
+
+    def insert(self, *args):
         '''insert an article
             no return.
             raise exceptions.
         '''
+        try:
+            self.cur.execute("INSERT INTO article (title, author, content, date_, author_id)"
+                             "VALUES (?, ?, ?, ?,?)", args)
+            return True
+        except:
+            return False
+        finally:
+            self.conn.commit()
 
 
 class MessageDao(DaoBase):
@@ -109,8 +161,11 @@ class AdminDao(DaoBase):
         '''delete_article'''
 
 du = UserDao('data.db3')
+ud = UserDao('data.db3')
+ui = UserInfo('data.db3')
 
 if __name__ == '__main__':
     print(du.user_exist('sfd'))
     print(du.check_pass('root', 'root'))
     du.insert('12121', '231123', '213123', '2')
+    ui.insert('342')
