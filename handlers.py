@@ -18,7 +18,7 @@ class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
         self.render('index.html', cookieName=self.get_cookie('stuID'),
-                    blogs=db.fetch_all_article(),
+                    blogs=db.fetch_all_article(),   # TODO(lxiange): use the new dao
                     announcements=db.fetch_all_announcement())
 
     def post(self):

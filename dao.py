@@ -141,6 +141,7 @@ class AdminDao(DaoBase):
         '''delete_article'''
 
 db = DaoBase('data.db3')
+# db = UserDao('data.db3')
 
 if __name__ == '__main__':
-    print(db.fetch_article('root')[0]['title'])
+    print(db.fetch_article('root'))
