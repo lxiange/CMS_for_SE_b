@@ -3,7 +3,8 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 
-from dao import db
+from dao import ud
+from dao import ui
 
 
 class logoutHandler(tornado.web.RequestHandler):
@@ -18,22 +19,21 @@ class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
         self.render('index.html', cookieName=self.get_cookie('stuID'),
-                    blogs=db.fetch_all_article(),   # TODO(lxiange): use the new dao
-                    announcements=db.fetch_all_announcement())
+                    blogs=[],   # TODO(lxiange): use the new dao
+                    announcements=[])
 
     def post(self):
         '''login'''
         name = self.get_argument('username')
-        passwd = self.get_argument('password')
-        # res = self.target_in_user(name)
-        # if res:  # 用户名已存在
-        #     self.write('user name comflict')
-        #     # self.redirect('/register')
-        # else:
-        #     self._insert_into_db(name, passwd)
-        #     self.set_cookie('stuID', name)
-        #     # self.write('good!')
-        #     self.redirect('/')
+        password = self.get_argument('password')
+        res = ud.check_pass(name, password)
+        if res:
+            self.set_cookie('stuID', name)
+            self.redirect('/')
+        else:
+            pass
+            # TODO(lxiange): wrong password
+
 
 
 class registerHandler(tornado.web.RequestHandler):
@@ -42,35 +42,38 @@ class registerHandler(tornado.web.RequestHandler):
     """
 
     def get(self):
-        self.render('register.html', sameName=False, sameMail=False)
+        self.render('register.html', same_name=False)
 
     def post(self):
         name = self.get_argument('username')
-        passwd = self.get_argument('password')
+        password = self.get_argument('password')
         njuid = self.get_argument('njuid')
 
-        res = db.target_in_user(name, 'username')
-        if res:  # 用户名已存在
-            self.write('user name comflict')
-            # TODO(lxiange): redirect
-            # self.redirect('/register')
+        res = ud.user_exist(name)
+        if res:  # user exists
+            self.render('/register', same_name=True)
         else:
-            db.insert_into_user(name, passwd, njuid)
+            ud.insert(name, password, njuid, 'stu')
+            ui.insert(name, '', '', '', '')
             self.set_cookie('stuID', name)
             self.redirect('/setting/info')
 
 
 class settingHandler(tornado.web.RequestHandler):
     '''edit user infomation and modify the password'''
-    def get(self, para):
+    def get(self):
         username = self.get_cookie('stuID')
-        userinfo = db.fetch_user_info(username)[0]
+        if not username:
+            self.redirect('error')
 
-        if para == 'info':
-            self.render('setting.html', userMail=userinfo[5], cookieName=userinfo[1],
-                        sex=None, birthday=None, city=None, intro=None)
+        userinfo = ui.fetch(username)
+        self.render('setting.html', userMail=userinfo['email'], cookieName=userinfo[1],
+                    sex=None, birthday=None, city=None, intro=None)# TODO(lxiange): modify it
         # elif para == 'pw':
         #     self.render('pw.html', cookieName=username, sameOldPw=True)
+
+    def post(self):
+        '''modify'''
 
 
 class manageHandler(tornado.web.RequestHandler):
@@ -100,3 +103,8 @@ class announcementHandler(tornado.web.RequestHandler):
 
 class homeworkHandler(tornado.web.RequestHandler):
      """assign a homework or view homework"""
+
+
+class errorHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('error.html')
