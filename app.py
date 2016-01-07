@@ -25,14 +25,14 @@ class MyApp(tornado.web.Application):
             (r'/', indexHandler),
             # (r'/member',memberHandler),
             # (r'/chat/(\d+)',chatHandler),
-            (r'/register', registerHandler),
-            (r'/logout', logoutHandler),
-            (r'/setting/(\w+)', settingHandler),
+            (r'/register', registerHandler),        # DONE
+            (r'/logout', logoutHandler),            # DONE
+            (r'/setting', settingHandler),          # DONE
             (r'/manage', manageHandler),
             (r'/homework/(\w+)', homeworkHandler),
             (r'/submit/(\w+)', submitHomeworkHandler),
             (r'/announcement', announcementHandler),
-            (r'/error', errorHandler),
+            (r'/error', errorHandler),              # DONE
             # (r'/post',postHandler),
             # (r'/user/(\w+)',userHandler),
             # (r'/blog/(\d+)',blogHandler),
