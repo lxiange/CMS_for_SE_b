@@ -2,6 +2,7 @@
 An operator for operate database
 """
 import sqlite3
+import time
 
 
 class DaoBase():
@@ -47,7 +48,8 @@ class UserDao(DaoBase):
             self.cur.execute("INSERT INTO user (username, password, njuid, user_type)"
                              "VALUES (?, ?, ?, ?)", args)
             return True
-        except:
+        except Exception as e:
+            print(e)
             assert 0
             return False
         finally:
@@ -57,6 +59,11 @@ class UserDao(DaoBase):
         self.cur.execute("SELECT * FROM user WHERE username = ?", (username,))
         res = self.cur.fetchone()
         assert res
+        return res
+
+    def fetch_all(self):
+        self.cur.execute("SELECT * FROM user")
+        res = self.cur.fetchall()
         return res
 
 
@@ -69,10 +76,11 @@ class UserInfo(DaoBase):
     def insert(self, *args, **kw):
         try:
             self.cur.execute("INSERT INTO user_info "
-                             "(username, sex, e_mail, birthday, mobile, self_intro)"
+                             "(username, sex, email, birthday, mobile, self_intro)"
                              "VALUES (?, ?, ?, ?, ?, ?)", args)
             return True
-        except:
+        except Exception as e:
+            print(e)
             assert 0
             return False
         finally:
@@ -84,8 +92,27 @@ class UserInfo(DaoBase):
         assert res
         return res
 
-    def update(self, *args, **kw):
-        '''update'''
+    def fetch_all(self):
+        self.cur.execute("SELECT * FROM user_info")
+        res = self.cur.fetchall()
+        return res
+
+    def update(self, username, info_dict):
+        try:
+            for k, v in info_dict.items():
+                print("UPDATE user_info SET %s = %s WHERE username = %s" %
+                      (k, v, username))
+                self.cur.execute("UPDATE user_info SET {} = ? WHERE username = ?".format(k),
+                                 (v, username))
+            return True
+
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+
+        finally:
+            self.conn.commit()
 
 
 class ArticleDao(DaoBase):
@@ -100,18 +127,16 @@ class ArticleDao(DaoBase):
             return the list of articles.
         '''
         self.cur.execute("SELECT * FROM article")
-        res=self.cur.fetchall()
-        return res
-
-
-    def fetch_article(self, author_name):
-        '''fetch someone's articles
-            return the list of articles.
-        '''
-        self.cur.execute("SELECT * FROM article WHERE author = '%s'" % author_name)
         res = self.cur.fetchall()
         return res
 
+    def fetch_articles(self, author_name):
+        '''fetch someone's articles
+            return the list of articles.
+        '''
+        self.cur.execute("SELECT * FROM article WHERE author = ?", (author_name,))
+        res = self.cur.fetchall()
+        return res
 
     def insert(self, *args):
         '''insert an article
@@ -122,7 +147,9 @@ class ArticleDao(DaoBase):
             self.cur.execute("INSERT INTO article (title, author, content, date_, author_id)"
                              "VALUES (?, ?, ?, ?,?)", args)
             return True
-        except:
+        except Exception as e:
+            print(e)
+            assert 0
             return False
         finally:
             self.conn.commit()
@@ -141,12 +168,51 @@ class AnnouncementDao(DaoBase):
     def __init__(self, arg):
         super(AnnouncementDao, self).__init__(arg)
 
+    def fetch_announcement(self, date_):
+        '''fetch the announcement of _date
+            TODO(lxiange): select announcement by date is useless...
+        '''
+        self.cur.execute("SELECT * FROM announcement where date_ = ?", (date_,))
+        res = self.cur.fetchone()
+        return res
+
+    def fetch_all(self):
+        '''fetch all articles.
+           return the list  of articles.
+        '''
+        self.cur.execute("SELECT * FROM announcement")
+        res = self.cur.fetchall()
+        return res
+
+    def insert(self, *args, **kw):
+        '''insert an Announcement
+        '''
+        try:
+            self.cur.execute("INSERT INTO announcement(title, author, content, date_, author_id)"
+                             "VALUES (?, ?, ?, ?, ?)", args)
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
 
 class AdminDao(DaoBase):
     """docstring for AdminDao"""
 
     def __init__(self, arg):
         super(AdminDao, self).__init__(arg)
+
+    def is_admin(self, username):
+        self.cur.execute("SELECT user_type FROM user WHERE username = ?", (username,))
+        res = self.cur.fetchone()
+        if res[0] in ['root', 'admin', 'TA']:
+        # TODO(lxiange): res['user_type']
+            return True
+        else:
+            return False
 
     def post_announcement(self, *args, **kw):
         '''post_announcement'''
@@ -160,12 +226,13 @@ class AdminDao(DaoBase):
     def delete_article(self, article_id):
         '''delete_article'''
 
-du = UserDao('data.db3')
 ud = UserDao('data.db3')
 ui = UserInfo('data.db3')
+ad = AnnouncementDao('data.db3')
+adm = AdminDao('data.db3')
 
 if __name__ == '__main__':
-    print(du.user_exist('sfd'))
-    print(du.check_pass('root', 'root'))
-    du.insert('12121', '231123', '213123', '2')
-    ui.insert('342')
+    print(ui.fetch_all())
+    ui.update('root', {'email': 'fffff@qq.com'})
+    print(ui.fetch_all())
+    print(adm.is_admin('root'))

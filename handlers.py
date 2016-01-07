@@ -5,6 +5,7 @@ import tornado.web
 
 from dao import ud
 from dao import ui
+from dao import ad
 
 
 class logoutHandler(tornado.web.RequestHandler):
@@ -18,9 +19,10 @@ class logoutHandler(tornado.web.RequestHandler):
 class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.render('index.html', cookieName=self.get_cookie('stuID'),
+        self.render('index.html',
+                    cookie_name=self.get_cookie('stuID'),
                     blogs=[],   # TODO(lxiange): use the new dao
-                    announcements=[])
+                    announcements=ad.fetch_all())
 
     def post(self):
         '''login'''
@@ -33,7 +35,6 @@ class indexHandler(tornado.web.RequestHandler):
         else:
             pass
             # TODO(lxiange): wrong password
-
 
 
 class registerHandler(tornado.web.RequestHandler):
@@ -56,24 +57,45 @@ class registerHandler(tornado.web.RequestHandler):
             ud.insert(name, password, njuid, 'stu')
             ui.insert(name, '', '', '', '')
             self.set_cookie('stuID', name)
-            self.redirect('/setting/info')
+            self.redirect('/setting')
 
 
 class settingHandler(tornado.web.RequestHandler):
-    '''edit user infomation and modify the password'''
+    '''edit user infomation'''
+
+    # TODO(lxiange): user photos
+
     def get(self):
         username = self.get_cookie('stuID')
         if not username:
             self.redirect('error')
 
         userinfo = ui.fetch(username)
-        self.render('setting.html', userMail=userinfo['email'], cookieName=userinfo[1],
-                    sex=None, birthday=None, city=None, intro=None)# TODO(lxiange): modify it
-        # elif para == 'pw':
-        #     self.render('pw.html', cookieName=username, sameOldPw=True)
+        self.render(
+            'setting.html',
+            username=userinfo['username'],
+            sex=userinfo['sex'],
+            user_mail=userinfo['email'],
+            birthday=userinfo['birthday'],
+            # TODO(lxiange): choose an uniform time format.
+            mobile=userinfo['mobile'],
+            self_intro=userinfo['self_intro']
+        )
 
     def post(self):
         '''modify'''
+        assert self.get_cookie('stuID') == self.get_argument('username')
+        ui.update(
+            self.get_argument('username'),
+            {
+                "sex": self.get_argument('sex'),
+                "user_mail": self.get_argument('email'),
+                "birthday": self.get_argument('birthday'),
+                "mobile": self.get_argument('mobile'),
+                "self_intro": self.get_argument('self_intro'),
+            }
+        )
+        self.redirect('/')
 
 
 class manageHandler(tornado.web.RequestHandler):
@@ -95,16 +117,38 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
 
 class announcementHandler(tornado.web.RequestHandler):
     '''post an announcement, only admin can do this'''
+
     def get(self):
-        pass
-        
-    def post(self):
+        '''
+        http://localhost/announcement/view
+        http://localhost/announcement/view?id=
+        (admin can edit the announcements)
+        '''
         pass
 
+    def post(self):
+        '''only admin can post'''
+        pass
+
+
 class homeworkHandler(tornado.web.RequestHandler):
-     """assign a homework or view homework"""
+    """assign a homework or view homework"""
+    def get(self, para):
+        '''
+        http://localhost/homework/view
+        http://localhost/homework/view?id=
+        (admin can download all the homework)
+
+        http://localhost/homework/assign
+        (only admin can do that)
+        
+        '''
 
 
 class errorHandler(tornado.web.RequestHandler):
+
     def get(self):
         self.render('error.html')
+
+    def post(self):
+        self.redirect('error')
