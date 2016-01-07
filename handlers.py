@@ -52,10 +52,10 @@ class registerHandler(tornado.web.RequestHandler):
 
         res = ud.user_exist(name)
         if res:  # user exists
-            self.render('/register', same_name=True)
+            self.render('register.html', same_name=True)
         else:
             ud.insert(name, password, njuid, 'stu')
-            ui.insert(name, '', '', '', '')
+            ui.insert(name, '', '', '', '', '')
             self.set_cookie('stuID', name)
             self.redirect('/setting')
 
@@ -68,33 +68,41 @@ class settingHandler(tornado.web.RequestHandler):
     def get(self):
         username = self.get_cookie('stuID')
         if not username:
-            self.redirect('error')
+            self.redirect('/error')
 
         userinfo = ui.fetch(username)
+        info_args = ['username', 'sex', 'email', 'birthday', 'mobile', 'self_intro']
+        info_dict = {}
+        for item in info_args:
+            try:
+                info_dict[item] = userinfo[item]
+            except Exception as e:
+                print(e)
+                info_dict[item] = ''
+
         self.render(
             'setting.html',
-            username=userinfo['username'],
-            sex=userinfo['sex'],
-            user_mail=userinfo['email'],
-            birthday=userinfo['birthday'],
-            # TODO(lxiange): choose an uniform time format.
-            mobile=userinfo['mobile'],
-            self_intro=userinfo['self_intro']
+            cookie_name=username,
+            **info_dict
         )
 
     def post(self):
         '''modify'''
-        assert self.get_cookie('stuID') == self.get_argument('username')
-        ui.update(
-            self.get_argument('username'),
-            {
-                "sex": self.get_argument('sex'),
-                "user_mail": self.get_argument('email'),
-                "birthday": self.get_argument('birthday'),
-                "mobile": self.get_argument('mobile'),
-                "self_intro": self.get_argument('self_intro'),
-            }
-        )
+        # assert self.get_cookie('stuID') == self.get_argument('username')
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        info_args = ['sex', 'email', 'birthday', 'mobile', 'self_intro']
+        info_dict = {}
+        for item in info_args:
+            try:
+                info_dict[item] = self.get_argument(item)
+            except Exception as e:
+                print(e)
+                info_dict[item] = ''
+
+        ui.update(username, info_dict)
         self.redirect('/')
 
 
@@ -133,6 +141,7 @@ class announcementHandler(tornado.web.RequestHandler):
 
 class homeworkHandler(tornado.web.RequestHandler):
     """assign a homework or view homework"""
+
     def get(self, para):
         '''
         http://localhost/homework/view
@@ -141,7 +150,7 @@ class homeworkHandler(tornado.web.RequestHandler):
 
         http://localhost/homework/assign
         (only admin can do that)
-        
+
         '''
 
 
@@ -151,4 +160,4 @@ class errorHandler(tornado.web.RequestHandler):
         self.render('error.html')
 
     def post(self):
-        self.redirect('error')
+        self.redirect('/error')

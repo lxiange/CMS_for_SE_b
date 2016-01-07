@@ -12,7 +12,7 @@ class DaoBase():
         super(DaoBase, self).__init__()
         self.db_name = arg
         self.conn = sqlite3.connect(self.db_name)
-        # self.conn.row_factory = sqlite3.Row
+        self.conn.row_factory = sqlite3.Row
         self.cur = self.conn.cursor()
 
 

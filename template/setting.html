@@ -2,62 +2,70 @@
 {%include 'head.html'%}
 
 {%block content%}
-<div class='col-md-offset-1 col-md-10'>
-    <ul class='nav nav-tabs'>
-        <li class='active'><a class='text-info h5' href='/setting/info'>基本</a></li>
-        <li><a class='text-info h5' href='/setting/pw'>密码</a></li>
-    </ul>
-    
+<div class='col-md-3'></div>
+<div class='col-md-6'>
     <link href='/static/bootstrap-datetimepicker.min.css' rel='stylesheet' type='text/css' media='screen'>
-    <form action='/setting/info' method='post' class='form-horizontal col-md-9' enctype='multipart/form-data'>
+ <div class="panel panel-primary">
+  <div class="panel-heading">编辑个人信息</div>
+  <div class="panel-body">
+    <form action='/setting' method='post' class='form-horizontal' enctype='multipart/form-data'>
+
         <div class='form-group'>
-            <label class='col-md-2 control-label'>绑定邮箱</label>
-            <label class='text-info h5'>&nbsp;&nbsp;&nbsp;&nbsp;{{userMail}}</label>
+            <label class='col-md-3 control-label'>用户名</label>
+            <div class='col-md-9'>
+                <input type='text' name='username' class='form-control' {%if username%}value="{{username}}"{%end%} disabled>
+            </div>
         </div>
+
         <div class='form-group'>
-            <label class='col-md-2 control-label'>上传新头像(推荐正方形照片)</label>
-            <div class='col-md-10'>
+            <label class='col-md-3 control-label'>邮箱</label>
+            <div class='col-md-9'>
+                <input type='text' name='email' class='form-control' {%if email%}value="{{email}}"{%end%} >
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='col-md-3 control-label'>上传新头像</label>
+            <div class='col-md-9'>
                 <input type='file' name='headpic' class='form-control'>
             </div>
         </div>
         <div class='form-group'>
-            <label class='col-md-2 control-label'>性别</label>
-            <div class='col-md-10'>
-            <table class=''>
-                <tr>
-                    <th class='text-info'>男</th>
-                    <th><input type='radio' name='sex' value='1' {%if sex=='1' or sex==None%}checked{%end%}></th>
-                    <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th class='text-danger'>女</th>
-                    <th><input type='radio' name='sex' value='0' {%if sex=='0'%}checked{%end%}></th>
-                </tr>
-            </table>
+            <label class='col-md-3 control-label'>性别</label>
+            <div class='col-md-9'>
+                <div class="radio col-md-2">
+                    <label><input type="radio" name="sex" id="sex1" value="male" {%if sex=='male' or sex==None%}checked{%end%}>男
+                    </label>
+                </div>
+                <div class="radio col-md-2">
+                    <label><input type="radio" name="sex" id="sex2" value="female" {%if sex=='female'%}checked{%end%}>女
+                    </label>
+                </div>
         </div>
         </div>
     
         <div class='form-group'>
-            <label class='col-md-2 control-label'>出生日期</label>
+            <label class='col-md-3 control-label'>出生日期</label>
             <div class="input-group date form_date col-md-4" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
                 <input type='text' name='birth' class="form-control" {%if birthday%}value="{{birthday}}"{%end%} size='16' readonly>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
         </div>
         
+
         <div class='form-group'>
-            <label class='col-md-2 control-label'>城市</label>
-            <div class='col-md-10'>
-                <input type='text' name='city' class='form-control ' {%if city%}placeholder='{{city}}'{%else%}placeholder='所在城市'{%end%}>
+            <label class='col-md-3 control-label'>自我介绍</label>
+            <div class='col-md-9'>
+                <textarea rows='10' type='text' name='self_intro' class='form-control ' placeholder='写一段自我介绍吧，100字以内喔，让大家最快了解你~' maxlength='100'> 
+                {%if self_intro%}{{self_intro}}{%end%}</textarea>
             </div>
         </div>
-        <div class='form-group'>
-            <label class='col-md-2 control-label'>自我介绍</label>
-            <div class='col-md-10'>
-                <textarea rows='10' type='text' name='intro' class='form-control ' placeholder='写一段自我介绍吧，100字以内喔，让大家最快了解你~' maxlength='100'>{%if intro%}{{intro}}{%end%}</textarea>
-            </div>
-        </div>
-        <button type='submit' class='btn btn-danger'>提交</button>
-    </form>
+        <button type='submit' class='btn btn-primary btn-md pull-right'>更新个人信息</button>
+    </form>      
+  </div>
+ </div>
 </div>
+
 <script src='/static/bootstrap-datetimepicker.min.js' charset='utf-8'></script>
 <script src='/static/bootstrap-datetimepicker.zh-CN.js' charset='utf-8'></script>
 <script>

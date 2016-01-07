@@ -8,58 +8,104 @@
         <script src="{{static_url('js/bootstrap.js')}}"></script>  
 </head>
 <body>
+    <script>
+    {%if same_name%}
+        alert('该用户名已被注册，请换一个再试试');
+    {%end%}
+
+</script>
+<script src='/static/registerCheck.js'></script>
     <nav class='navbar navbar-default'>
     <div class='navbar-header'>
         <a class='navbar-brand' href='/'>NJU CSer</a>
     </div>
     </nav>
-<script>
-    {%if sameName%}
-        alert('该用户名已被注册，请换一个再试试');
-    {%end%}
 
-    {%if sameMail%}
-        alert('该邮箱已被使用，请换一个再试试');
-    {%end%}
-</script>
-<script src='/static/registerCheck.js'></script>
-<div class='col-md-7'>
-<form action='/register' method='post' class='well' name='form'>
-    <div class='form-group'>
-        <label class='text-info h4'>用户名<small>（6-15个以字母开头，可带数字下划线的字串）</small></label>
-        <input type='text' name='username' class='form-control' maxlength='20'/>
-    </div>
-    <div class='form-group'>
-        <label class='text-info h4'>学号</label>
-        <input type='text' name='njuid' class='form-control'/>
-    </div>
-    <div class='form-group'>
-        <label class='text-info h4'>密码</label>
-        <input type='password' name='password' class='form-control'/>
-    </div>
-    <div class='form-group'>
-        <label class='text-info h4'>确认密码</label>
-        <input type='password' name='password2' class='form-control'/>
-    </div>
-    <button type='submit' class='btn btn-primary' onclick='return checkform()'>注册</button>
-    <a href='/'>已有帐号，请直接登录</a>
-</form>
-</div>
+    
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <header class="text-center">
+                        <div class="square"></div>
+                        <h1 style="font-family: Microsoft YaHei;font-size:300%;color:black">注册</h1>
+                    </header>
+                </div>
+                <div class="panel-body">
+                    <br>
+                    <div id="myTabContent" class="tab-content">
+                       <div class="tab-pane fade in active" id="register">
+                            <form action='/register' method='post' class='well' name='form'>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </div>
+                                        <input name="username" type="text" class="form-control"
+                                            placeholder="用户名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </div>
+                                        <input name="njuid" type="text" class="form-control"
+                                            placeholder="学号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-eye-open"></span></span>
+                                        </div>
+                                        <input name="password" type="password" class="form-control" placeholder="密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-eye-open"></span></span>
+                                        </div>
+                                        <input name="password2" type="password" class="form-control" placeholder="确认密码">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block" onclick='return checkform()'>成为新用户</button>
+                                    <a href='/'>已有帐号，请直接登录</a>
+                                </div>
+                            </form>
+                       </div>
+                    </div>
 
-<div class='col-md-5'>
-    <p class='text-info h3'>注意事项</p>
-    <ul>
-        <li class='h4'>请使用真实学号注册:-)</li>
-        <li class='h4'>请勿使用恶搞的用户名:-)</li>
-        <li class='h4'>有问题请即使与管理员联系:-)</li>
-        <li class='h4'>:-)</li>
-    </ul>
-<p class='text-primary h4'>追随自己内心的声音，加入我们，搞起！！！</p>
-</div>
-        <div class='col-md-10 col-md-offset-1'>
-            <hr/>
+                </div>
+            </div>
+            <div class="panel">
+                <p class="text-center">
+                   <hr/>
             <a href='/about' class='text-muted h5'>关于</a>
-            <span class='text-muted h5'>&nbsp;&nbsp; © 2015 NJU CSer</span>
+            <span class='text-muted h5'>&nbsp;&nbsp; © 2015 NJU CSer</span> 
+                </p>
+            </div>
         </div>
-    </body>
+        <div class="col-sm-4">
+            <p class='text-info h3'>注意事项</p>
+                <ul>
+                    <li class='h4'>请使用真实学号注册:-)</li>
+                    <li class='h4'>请勿使用恶搞的用户名:-)</li>
+                    <li class='h4'>有问题请即使与管理员联系:-)</li>
+                    <li class='h4'>:-)</li>
+                </ul>
+            <p class='text-primary h4'>追随自己内心的声音，加入我们，搞起！！！</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
 </html>
