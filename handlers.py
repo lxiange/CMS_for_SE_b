@@ -2,10 +2,13 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
+import time
 
 from dao import ud
 from dao import ui
 from dao import ad
+from dao import adm
+from dao import hd
 
 
 class logoutHandler(tornado.web.RequestHandler):
@@ -19,9 +22,10 @@ class logoutHandler(tornado.web.RequestHandler):
 class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
+        username = self.get_cookie('stuID')
         self.render('index.html',
-                    cookie_name=self.get_cookie('stuID'),
-                    blogs=[],   # TODO(lxiange): use the new dao
+                    cookie_name=username,
+                    is_admin=adm.is_admin(username),
                     announcements=ad.fetch_all())
 
     def post(self):
@@ -117,7 +121,11 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
     '''handler for submit homework'''
 
     def get(self):
-        pass
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        self.render('submit_homework.html', cookie_name=username)
 
     def post(self):
         pass
@@ -127,6 +135,11 @@ class announcementHandler(tornado.web.RequestHandler):
     '''post an announcement, only admin can do this'''
 
     def get(self):
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        self.render('announcement.html', cookie_name=username)
         '''
         http://localhost/announcement/view
         http://localhost/announcement/view?id=
@@ -136,13 +149,35 @@ class announcementHandler(tornado.web.RequestHandler):
 
     def post(self):
         '''only admin can post'''
-        pass
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+        title = self.get_argument('announcement_title')
+        author = username
+        content = self.get_argument('announcement_content')
+        date_ = time.strftime('%Y-%m-%d %H:%M:%S')
+
+        ad.insert(title, author, content, date_)
+        self.redirect('/')
 
 
 class homeworkHandler(tornado.web.RequestHandler):
     """assign a homework or view homework"""
 
     def get(self, para):
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        if para == 'view':
+            homework_list = hd.fetch_all()
+            self.render('homework.html', cookie_name=username,
+                        homework_list=homework_list)
+
+        if para == 'assign':
+            if not adm.is_admin(username):
+                self.redirect('/error')
+            self.render('assign_homework.html', cookie_name=username)
         '''
         http://localhost/homework/view
         http://localhost/homework/view?id=
@@ -152,6 +187,34 @@ class homeworkHandler(tornado.web.RequestHandler):
         (only admin can do that)
 
         '''
+
+    def post(self, para):
+        if para == 'view':
+            self.redirect('/error')
+        # only assign_homework accept post request
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        title = self.get_argument('homework_title')
+        author = username
+        content = self.get_argument('homework_content')
+        date_ = time.strftime('%Y-%m-%d %H:%M:%S')
+        deadline = self.get_argument('homework_deadline', '2013-01-08 23:57:32')
+        hd.insert(title, author, content, date_, deadline)
+        self.redirect('/')
+
+
+
+class uploadResourceHandler(tornado.web.RequestHandler):
+    """docstring for uploadResourceHandler"""
+
+    def get(self):
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        self.render('upload_resource.html', cookie_name=username)
 
 
 class errorHandler(tornado.web.RequestHandler):

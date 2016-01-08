@@ -30,13 +30,15 @@ class MyApp(tornado.web.Application):
             (r'/setting', settingHandler),          # DONE
             (r'/manage', manageHandler),
             (r'/homework/(\w+)', homeworkHandler),
-            (r'/submit/(\w+)', submitHomeworkHandler),
+            (r'/submit_homework', submitHomeworkHandler),
+            (r'/upload_resource', uploadResourceHandler),
             (r'/announcement', announcementHandler),
             (r'/error', errorHandler),              # DONE
             # (r'/post',postHandler),
             # (r'/user/(\w+)',userHandler),
             # (r'/blog/(\d+)',blogHandler),
             # (r'/comment',commentHandler),
+            (r'.*', errorHandler),
         ]
         settings = {
             'static_path': os.path.join(os.path.dirname(__file__), 'static'),

@@ -39,7 +39,7 @@ class UserDao(DaoBase):
         res = self.cur.fetchone()
         return res
 
-    def insert(self, *args, **kw):
+    def insert(self, *args):
         '''insert userinfo into table user
             raise exception.
         '''
@@ -73,7 +73,7 @@ class UserInfo(DaoBase):
     def __init__(self, arg):
         super(UserInfo, self).__init__(arg)
 
-    def insert(self, *args, **kw):
+    def insert(self, *args):
         try:
             self.cur.execute("INSERT INTO user_info "
                              "(username, sex, email, birthday, mobile, self_intro)"
@@ -144,8 +144,8 @@ class ArticleDao(DaoBase):
             raise exceptions.
         '''
         try:
-            self.cur.execute("INSERT INTO article (title, author, content, date_, author_id)"
-                             "VALUES (?, ?, ?, ?,?)", args)
+            self.cur.execute("INSERT INTO article (title, author, content, date_)"
+                             "VALUES (?, ?, ?, ?)", args)
             return True
         except Exception as e:
             print(e)
@@ -184,11 +184,38 @@ class AnnouncementDao(DaoBase):
         res = self.cur.fetchall()
         return res
 
-    def insert(self, *args, **kw):
+    def insert(self, *args):
         '''insert an Announcement
         '''
         try:
-            self.cur.execute("INSERT INTO announcement(title, author, content, date_, author_id)"
+            self.cur.execute("INSERT INTO announcement(title, author, content, date_)"
+                             "VALUES (?, ?, ?, ?)", args)
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
+
+class HomeworkDao(DaoBase):
+    """for homework itself!"""
+
+    def __init__(self, arg):
+        super(HomeworkDao, self).__init__(arg)
+
+    def fetch_all(self):
+        '''fetch all homework.
+           return the list  of homework.
+        '''
+        self.cur.execute("SELECT * FROM homework")
+        res = self.cur.fetchall()
+        return res
+
+    def insert(self, *args):
+        try:
+            self.cur.execute("INSERT INTO homework(title, author, content, date_, deadline)"
                              "VALUES (?, ?, ?, ?, ?)", args)
             return True
         except Exception as e:
@@ -199,6 +226,32 @@ class AnnouncementDao(DaoBase):
             self.conn.commit()
 
 
+class SubmissionDao(object):
+    """docstring for SubmissionDao"""
+
+    def __init__(self, arg):
+        super(SubmissionDao, self).__init__(arg)
+
+    def fetch(self, username):
+        '''fetch someone's submission '''
+
+    def has_submitted(self, username, homework_id):
+        '''someone has submitted the homework'''
+
+    def insert(self, *args):
+        '''add a submit'''
+
+
+class ResourceDao(DaoBase):
+    """docstring for ResourceDao"""
+
+    def __init__(self, arg):
+        super(ResourceDao, self).__init__(arg)
+
+    def fetch(self, username):
+        '''fetch someone's resources'''
+
+
 class AdminDao(DaoBase):
     """docstring for AdminDao"""
 
@@ -206,10 +259,13 @@ class AdminDao(DaoBase):
         super(AdminDao, self).__init__(arg)
 
     def is_admin(self, username):
-        self.cur.execute("SELECT user_type FROM user WHERE username = ?", (username,))
+        if not username:
+            return False
+        self.cur.execute(
+            "SELECT user_type FROM user WHERE username = ?", (username,))
         res = self.cur.fetchone()
         if res[0] in ['root', 'admin', 'TA']:
-        # TODO(lxiange): res['user_type']
+            # TODO(lxiange): res['user_type']
             return True
         else:
             return False
@@ -230,6 +286,7 @@ ud = UserDao('data.db3')
 ui = UserInfo('data.db3')
 ad = AnnouncementDao('data.db3')
 adm = AdminDao('data.db3')
+hd = HomeworkDao('data.db3')
 
 if __name__ == '__main__':
     print(ui.fetch_all())

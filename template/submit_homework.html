@@ -1,0 +1,82 @@
+{%extends 'main.html'%}
+{%include 'head.html'%}
+{%block content%}
+<ul>
+    {%if cookie_name%}
+    <div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-3 sidenav">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
+                    <li class="active"><a href="/homework/view"><span class="glyphicon glyphicon-pencil"></span> 查看作业</a></li>
+                    <li><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
+                    <li><a href="/">hahaa</a></li>
+                </ul><br>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Blog..">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-9 text-left">
+                <!-- HOMEWORK -->
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">这里是作业详情 Panel</div>
+                        <div class="panel-body">
+                            <h2>作业详情</h2>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <colgroup>
+                                        <col width='20%'></col>
+                                        <col width='80%'></col>
+                                        </colgroup>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
+                                            <td>张天</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
+                                            <td>2016/01/08 00:49</td>
+                                        </tr>
+                                        <tr class="danger">
+                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                            <td>未提交</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
+                                            <td>有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="glyphicon glyphicon-cloud-upload"></span> 我的上传</td>
+                                            <td>
+                                                <!-- TODO: FORM UNHANDLED -->
+                                                <form role="form">
+                                                    <div class="form-group">
+                                                        <!-- TODO: THERE IS TEXTARE_NAME UNHANDLED -->
+                                                        <textarea class="form-control" rows="3" name=""></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!-- TODO: THERE IS FILE_NAME UNHANDLED -->
+                                                        <input type='file' name='file' class='form-control'>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交作业</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%else%}
+                <li>no cookiename</li>
+                {%end%}
+            </ul>

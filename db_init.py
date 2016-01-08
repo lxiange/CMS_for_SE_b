@@ -27,7 +27,7 @@ cur.execute("CREATE TABLE article(\
                 content VARCHAR(1000000),\
                 date_ VARCHAR(100))")
 cur.execute("INSERT INTO article \
-    VALUES (1000,'hello world','root','Hello! It is  a test!','fuck_time')")
+    VALUES (1000,'hello world','root','Hello! It is  a test!','2016-01-08 23:57:32')")
 
 
 cur.execute("CREATE TABLE announcement(\
@@ -37,7 +37,7 @@ cur.execute("CREATE TABLE announcement(\
                 content VARCHAR(1000000),\
                 date_ VARCHAR(100))")
 cur.execute("INSERT INTO announcement \
-    VALUES (1000,'announcement title','root','Hello! It is  a test!','fuck_time')")
+    VALUES (1000,'announcement title','root','Hello! It is  a test!','2016-01-08 23:57:32')")
 
 
 cur.execute("CREATE TABLE user_info (\
@@ -59,7 +59,29 @@ cur.execute("CREATE TABLE homework (\
                 date_ VARCHAR(100),\
                 deadline VARCHAR(100))")
 cur.execute("INSERT INTO homework VALUES (?, ?, ?, ?, ?, ?)",
-            (1000, 'eat shit', 'root', 'ffffffff', '2011-11-11', '2023-11-11'))
+            (1000, 'eat shit', 'root', 'ffffffff', '2013-01-08 23:57:32', '2016-01-18 23:57:32'))
+
+
+cur.execute("CREATE TABLE submission (\
+                submission_id INTEGER PRIMARY KEY AUTOINCREMENT,\
+                author VARCHAR(128),\
+                title VARCHAR(512),\
+                content VARCHAR(1000000),\
+                date_ VARCHAR(100),\
+                homework_id INTEGER,\
+                file_path VARCHAR(500))")
+cur.execute("INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (1000, 'root', 'first commit', 'this is the content', '2013-01-08 23:57:32', 1000, '/homework/1/111.rar'))
+
+cur.execute("CREATE TABLE resource (\
+                resource_id INTEGER PRIMARY KEY AUTOINCREMENT,\
+                author VARCHAR(128),\
+                title VARCHAR(512),\
+                content VARCHAR(1000000),\
+                date_ VARCHAR(100),\
+                file_path VARCHAR(500))")
+cur.execute("INSERT INTO resource VALUES (?, ?, ?, ?, ?, ?)",
+           (1000, 'root', 'first resource', 'this is the first resource', '2013-01-08 23:57:32', '/resource/111.rar'))
 
 
 conn.commit()

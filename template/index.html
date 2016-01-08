@@ -1,48 +1,152 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
-
 {%block content%}
 <ul>
     {%if cookie_name%}
-        <div class="container-fluid">    
+    <div class="container-fluid">
         <div class="row content">
             <div class="col-sm-3 sidenav">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="/">课程公告</a></li>
-                    <li><a href="/homework">查看作业</a></li>
-                    <li><a href="/resource">下载资源</a></li>
+                    <li class="active"><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
+                    <li><a href="/homework/view"><span class="glyphicon glyphicon-pencil"></span> 查看作业</a></li>
+                    <li><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
                     <li><a href="/">hahaa</a></li>
+                    <!-- TODO: 把链接放到合适的位置，并且每个页面都要有，强烈建议写成模板，就像head.html一样 -->
+                    <!-- TODO: 重新调整公告样式 -->
+                    {% if is_admin%}
+                        <li><a href="/announcement">
+                            <span class="glyphicon glyphicon-pencil"></span> 发布公告</span>
+                        </a></li>
+                        <li><a href="/homework/assign">
+                            <span class="glyphicon glyphicon-pencil"></span> 发布作业</span>
+                        </a></li>
+                        <li><a href="/upload_resource">
+                            <span class="glyphicon glyphicon-pencil"></span> 上传资源</span>
+                        </a></li>
+                    {% end %}
                 </ul><br>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search Blog..">
                     <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
+                        <button class="btn btn-primary" type="button">
                         <span class="glyphicon glyphicon-search"></span>
-                    </button>
+                        </button>
                     </span>
                 </div>
             </div>
-            <div class="col-sm-9 text-left"> 
-            <h1>Welcome</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <hr>
-            <h3>Test</h3>
-            <p>Lorem ipsum...</p>
-            <div class="pull-right action-buttons">
-                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                <a href="#" class="flag"><span class="glyphicon glyphicon-flag"></span></a>
-                <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
-            </div>
+            <div class="col-sm-9 text-left">
+                <!-- COURSE SUMMARY -->
+                <div class="row">
+                    <div class="col-sm-12 well">
+                        <div>
+                            <h1>软件工程</h1>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p>软件工程是一门很好的课程.</p>
+                                    <p>软件工程是一门很好的课程.</p>
+                                    <p>软件工程是一门很好的课程.</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>姓名</th>
+                                                <th>职务</th>
+                                                <th>联系方式</th>
+                                                <th>发私信</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>张天</td>
+                                                <td>教授</td>
+                                                <td>zt@nju.edu.cn</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mary</td>
+                                                <td>助教</td>
+                                                <td>mary@example.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>July</td>
+                                                <td>助教</td>
+                                                <td>july@example.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ANNOUNCEMENT -->
+                <div class="row">
+                    <div class="panel-group" id="accordion1">
+                        {%for anno in announcements%}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion1" href="#announcement_collapse1">
+                                    {{anno['title']}}
+                                    <span class="label label-danger">New！</span></a>
+                                    </h4>
+                                </div>
+                                <div id="announcement_collapse1" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <colgroup>
+                                                    <col width='20%'></col>
+                                                    <col width='80%'></col>
+                                                    </colgroup>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><h5>
+                                                        <span class="label label-success">考试相关</span>
+                                                        <span class="label label-danger">重要</span></h5>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
+                                                        <td>{{anno['author']}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="glyphicon glyphicon-time"></span> 发布时间</td>
+                                                        <td>{{anno['date_']}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="glyphicon glyphicon-comment"></span> 公告内容</td>
+                                                        <td>{{anno['content']}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {%end%}
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion1" href="#announcement_collapse2">这里是公告标题 2</a>
+                                    </h4>
+                                </div>
+                                <div id="announcement_collapse2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        这里是空的公告内容
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ANNOUNCEMENT SUBMIT -->
+                    <!-- HOMEWORK ASSIGNMENT -->
+                    <!-- RESOURCE UPLOAD -->
+                </div>
             </div>
         </div>
-        </div>
-    
-    {%else%}
-    <li>no cookiename</li>
+        {%else%}
+        <li>no cookiename</li>
+        {%end%}
+    </ul>
     {%end%}
-    {%for i in blogs%}
-    <li><a href='/user/{{i[1]}}' class='text-success h4'>【{{i[1]}}】</a><a href='/blog/{{i[0]}}' class='text-primary h3'>{{i[2]}}</a></p><p class='text-muted h6'>{{i[3]}}</p></li>
-    <br/>
-    {%end%}
-</ul>
-{%end%}
