@@ -5,22 +5,7 @@
     {%if cookie_name%}
     <div class="container-fluid">
         <div class="row content">
-            <div class="col-sm-3 sidenav">
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
-                    <li class="active"><a href="/homework/view"><span class="glyphicon glyphicon-pencil"></span> 查看作业</a></li>
-                    <li><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
-                    <li><a href="/">hahaa</a></li>
-                </ul><br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search Blog..">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                        <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
-                </div>
-            </div>
+            {%include 'nav_vertical.html'%}
             <div class="col-sm-9 text-left">
                 <!-- HOMEWORK -->
                 <div class="row">
@@ -30,85 +15,82 @@
                         <div class="panel panel-danger">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion2" href="#homework_collapse1">
-                                    <!-- 这里是邻近DDL的作业标题 1  -->
-                                    {{hw['title']}}
-                                    <span class="label label-danger">New！</span></a>
-                                    </h4>
-                                </div>
-                                <div id="homework_collapse1" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        <div class="alert alert-warning fade in">
-                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                            <span class="glyphicon glyphicon-info-sign"></span>
-                                            请务必在 {{hw['deadline']}}前提交。
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <colgroup>
-                                                    <col width='20%'></col>
-                                                    <col width='80%'></col>
-                                                    </colgroup>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                                                        <td>{{hw['author']}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="glyphicon glyphicon-time"></span> 发布日期</td>
-                                                        <td>{{hw['date_']}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
-                                                        <td>{{hw['deadline']}}</td>
-                                                    </tr>
-                                                    <!--  TODO:
-                                                    if status == 'notsubmit' red
-                                                    if status == 'submitted' green
-                                                    if status == 'rated' //已经评分过 -->
-                                                    <tr class="danger">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>未提交</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
-                                                        <td>
-                                                            {{hw['content']}}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success btn-md'>现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}> {{hw['title']}} <span class="label label-danger">New！</span></a> </h4>
                             </div>
-                            {%end%}
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion2" href="#homework_collapse2">
-                                        这里是作业标题 2
-                                    </a>
-                                    </h4>
+                            <div id={{"homework_collapse"+hw['title']}} class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="alert alert-warning fade in">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <span class="glyphicon glyphicon-info-sign"></span> 请务必在 {{hw['deadline']}}前提交。
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <colgroup>
+                                                <col width='20%'></col>
+                                                <col width='80%'></col>
+                                                </colgroup>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
+                                                    <td>{{hw['author']}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="glyphicon glyphicon-time"></span> 发布日期</td>
+                                                    <td>{{hw['date_']}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
+                                                    <td>{{hw['deadline']}}</td>
+                                                </tr>
+                                                <!--  TODO:
+                                                if status == 'notsubmit' red
+                                                if status == 'submitted' green
+                                                if status == 'rated' //已经评分过 -->
+                                                <tr class="danger">
+                                                    <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                    <td>未提交</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
+                                                    <td>
+                                                        {{hw['content']}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div id="homework_collapse2" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        这里是空的作业内容
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success btn-md'>现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {%end%}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#homework_collapse2">
+                                    这里是作业标题 2
+                                </a>
+                                </h4>
+                            </div>
+                            <div id="homework_collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    这里是空的作业内容
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- HOMEWORK DETAIL -->
-                    {%else%}
-                    <li>no cookiename</li>
-                    {%end%}
-                </ul>
-                {%end%}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- HOMEWORK DETAIL -->
+    {%else%}
+    <li>no cookiename</li>
+    {%end%}
+</ul>
+{%end%}

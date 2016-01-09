@@ -4,100 +4,227 @@
         <title>NJU CSers' Club</title>
         <meta name='viewport' content='width=device-width,initial-scale=1.0'>
         <link href="{{static_url('css/bootstrap.css')}}" rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
         <script src="{{static_url('js/jquery-2.1.4.min.js')}}"></script>
         <script src="{{static_url('js/bootstrap.js')}}"></script>
+        <link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" href="../static/dist/css/bootstrapValidator.css"/>
+        <script type="text/javascript" src="../static/vendor/jquery/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../static/dist/js/bootstrapValidator.js"></script>
+        <script type="text/javascript" src="../static/dist/js/language/zh_CN.js"></script>
     </head>
-    <body>
+    <body style="font-family:Lato;">
         <script>
         {%if same_name%}
         alert('该用户名已被注册，请换一个再试试');
         {%end%}
         </script>
         <script src='/static/registerCheck.js'></script>
-        <nav class='navbar navbar-default'>
-            <div class='navbar-header'>
-                <a class='navbar-brand' href='/'>NJU CSer</a>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">NJU Software Engineering</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="/member/1"><span class="glyphicon glyphicon-user"> 成员</a>
+                        </li>
+                        <li>
+                            <a href="/chatting/1"><span class="glyphicon glyphicon-bullhorn"> 吐槽</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <form action='/' method='post' class='form-inline navbar-form navbar-right'>
+                            <div class='form-group'>
+                                <label class='sr-only'>用户名</label>
+                                <input type='text' name='username' class='form-control'                     placeholder='用户名'/>
+                            </div>
+                            <div class='form-group'>
+                                <label class='sr-only'>密码</label>
+                                <input type='password' name='password' class='form-control'                 placeholder='密码'/>
+                            </div>
+                            <button type='submit' class='btn btn-success'>登录</button>
+                        </form>
+                    </ul>
+                </div>
             </div>
         </nav>
-
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <header class="text-center">
-                            <div class="square"></div>
-                            <h1 style="font-family: Microsoft YaHei;font-size:300%;color:black">注册</h1>
-                        </header>
-                    </div>
-                    <div class="panel-body">
-                        <br>
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade in active" id="register">
-                                <form action='/register' method='post' class='well' name='form'>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="glyphicon glyphicon-user"></span>
-                                            </div>
-                                            <input name="username" type="text" class="form-control"
-                                            placeholder="用户名">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="glyphicon glyphicon-user"></span>
-                                            </div>
-                                            <input name="njuid" type="text" class="form-control"
-                                            placeholder="学号">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="glyphicon glyphicon-eye-open"></span></span>
-                                            </div>
-                                            <input name="password" type="password" class="form-control" placeholder="密码">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="glyphicon glyphicon-eye-open"></span></span>
-                                            </div>
-                                            <input name="password2" type="password" class="form-control" placeholder="确认密码">
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group text-center">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" onclick='return checkform()'>成为新用户</button>
-                                        <a href='/'>已有帐号，请直接登录</a>
-                                    </div>
-                                </form>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class='container' role='content'>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                            </ol>
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                    <img src="http://p9.qhimg.com/t0166f672a4e71ecad2.jpg" alt="南京大学">
+                                </div>
+                                <div class="item">
+                                    <img src="http://www.nju.edu.cn/_upload/article/images/48/c4/076f92fc4d90b01778f6526efa01/29b2f60e-6074-4ecb-b822-c799feee9ac8.png" alt="校训">
+                                </div>
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <p style="font-family:Microsoft YaHei; font-size:200%;"> <strong>注册课程</strong> </p>
+                            </div>
+                            <div class="panel-body">
+                                <br>
+                                <div>
+                                    <form id="defaultForm" class="form-horizontal" action='/register' method='post' name='form'>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">用户名</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" name="username" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">学号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" name="njuid" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Email</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" name="email" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">密码</label>
+                                            <div class="col-lg-8">
+                                                <input type="password" class="form-control" name="password" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">性别</label>
+                                            <div class="col-md-9">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="gender" value="male" /> 男
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="gender" value="female" /> 女
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-3 col-md-8">
+                                                <div id="errors"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block" onclick='return checkform()'>成为新用户</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <p class="text-center">
+                                <hr/>
+                                <a href='/about' class='text-muted h5'>关于</a>
+                                <span class='text-muted h5'>&nbsp;&nbsp; © 2015 NJU CSer</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel">
-                    <p class="text-center">
-                        <hr/>
-                        <a href='/about' class='text-muted h5'>关于</a>
-                        <span class='text-muted h5'>&nbsp;&nbsp; © 2015 NJU CSer</span>
-                    </p>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <p class='text-info h3'>注意事项</p>
-                <ul>
-                    <li class='h4'>请使用真实学号注册:-)</li>
-                    <li class='h4'>请勿使用恶搞的用户名:-)</li>
-                    <li class='h4'>有问题请即使与管理员联系:-)</li>
-                    <li class='h4'>:-)</li>
-                </ul>
-                <p class='text-primary h4'>追随自己内心的声音，加入我们，搞起！！！</p>
             </div>
         </div>
-    </div>
-</body>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#defaultForm').bootstrapValidator({
+            message: '请检查出错表项。',
+            container: '#errors',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: '用户名无效。',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名是必填项且不能是空的。'
+                        },
+                        stringLength: {
+                            min: 4,
+                            max: 30,
+                            message: '用户名必须大于4位且小于30位。'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '用户名必须且只能是字母、数字、点和下划线。'
+                        },
+                        different: {
+                            field: 'password',
+                            message: '密码与用户名雷同。'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: '输入的不是有效邮箱地址。'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码是必填项且不能是空的。'
+                        },
+                        different: {
+                            field: 'username',
+                            message: '密码与用户名雷同。'
+                        }
+                    }
+                },
+                gender: {
+                    validators: {
+                        notEmpty: {
+                            message: '性别是必选项。'
+                        }
+                    }
+                }
+            }
+        });
+    });
+    </script>
+    </body>
 </html>

@@ -5,22 +5,7 @@
     {%if cookie_name%}
     <div class="container-fluid">
         <div class="row content">
-            <div class="col-sm-3 sidenav">
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
-                    <li><a href="/homework"><span class="glyphicon glyphicon-pencil"></span> 查看作业</a></li>
-                    <li><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
-                    <li><a href="/">hahaa</a></li>
-                </ul><br>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search Blog..">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                        <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
-                </div>
-            </div>
+            {%include 'nav_vertical.html'%}
             <div class="col-sm-9 text-left">
                 <!-- HOMEWORK -->
                 <div class="row">
@@ -47,9 +32,11 @@
                         </div>
                     </div>
                 </div>
-
-                {%else%}
-                <li>no cookiename</li>
-                {%end%}
-            </ul>
-            {%end%}
+            </div>
+        </div>
+    </div>
+    {%else%}
+    <li>no cookiename</li>
+    {%end%}
+</ul>
+{%end%}
