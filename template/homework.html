@@ -47,10 +47,25 @@
                                                 if status == 'notsubmit' red
                                                 if status == 'submitted' green
                                                 if status == 'rated' //已经评分过 -->
-                                                <tr class="danger">
-                                                    <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                    <td>未提交</td>
-                                                </tr>
+
+                                                {% if status_dict[hw['homework_id']] == 'rated' %}
+                                                    <tr class="danger">
+                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                        <td>已评分，作业已完成</td>
+                                                    </tr>
+                                                {% end %}
+                                                {% if status_dict[hw['homework_id']] == 'submitted' %}
+                                                    <tr class="danger">
+                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                        <td>已提交，待评分</td>
+                                                    </tr>
+                                                {% end %}
+                                                {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                                    <tr class="danger">
+                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                        <td>未提交</td>
+                                                    </tr>
+                                                {% end %}
                                                 <tr>
                                                     <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
                                                     <td>

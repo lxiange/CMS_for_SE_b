@@ -231,9 +231,16 @@ class HomeworkDao(DaoBase):
         finally:
             self.conn.commit()
 
+    def get_last_id(self):
+        self.cur.execute("SELECT last_insert_rowid()")
+        res = self.cur.fetchone()
+        return res[0]
+
 
 class SubmissionDao(DaoBase):
-    """docstring for SubmissionDao"""
+    """docstring for SubmissionDao
+    (username, homework_id) is unique
+    """
 
     def __init__(self, arg):
         super(SubmissionDao, self).__init__(arg)
@@ -247,14 +254,18 @@ class SubmissionDao(DaoBase):
     def fetch_by_homework_id(self, homework_id):
         self.cur.execute("SELECT * FROM submission where homework_id = ?",
                          (homework_id,))
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_one_submission(self, username, homework_id):
+        self.cur.execute("SELECT * FROM submission where author = ? and homework_id = ?",
+                         (username, homework_id))
         res = self.cur.fetchone()
         return res
 
     def has_submitted(self, username, homework_id):
         '''someone has submitted the homework'''
-        self.cur.execute("SELECT * FROM submission where username = ? and homework_id = ?",
-                         (username, homework_id))
-        res = self.cur.fetchone()
+        res = self.fetch_one_submission(username, homework_id)
         if res:
             return True
         else:

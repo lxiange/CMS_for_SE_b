@@ -1,8 +1,10 @@
+import time
+import os
+
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-import time
 
 from dao import ud
 from dao import ui
@@ -134,18 +136,30 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
         homework_info = hd.fetch_by_id(homework_id)
         assert homework_info
         status = 'notsubmit'
-        submission = sbd.fetch_by_homework_id(homework_id)
+        submission = sbd.fetch_one_submission(username, homework_id)
         if not submission:
-            status='notsubmit'
+            status = 'notsubmit'
         else:
-            status=submission['status']
+            status = submission['status']
         self.render('submit_homework.html', cookie_name=username,
                     is_admin=adm.is_admin(username),
                     homework_info=homework_info,
                     status=status)
 
     def post(self):
-        pass
+        # submission_content = self.get_argument('submission_content')
+        # print(self.request.files)
+        # submission_files = self.request.files.get('submission_files')
+        # print(submission_files)
+        # homework_id = int(self.get_argument('hw_id', '0'))
+        # for sb_file in submission_files:
+        #     filename = sb_file['filename']
+        #     # TODO: try catch
+        #     filepath = os.path.join('data/homework',str(homework_id),filename)
+        #     with open(filepath,'wb') as upfile:
+        #         upfile.write(sb_file['body'])
+        # TODO: find a better file upload way.
+        self.redirect('/homework')
 
 
 class announcementHandler(tornado.web.RequestHandler):
@@ -158,12 +172,7 @@ class announcementHandler(tornado.web.RequestHandler):
 
         self.render('announcement.html', cookie_name=username,
                     is_admin=adm.is_admin(username))
-        '''
-        http://localhost/announcement/view
-        http://localhost/announcement/view?id=
-        (admin can edit the announcements)
-        '''
-        pass
+
 
     def post(self):
         '''only admin can post'''
@@ -189,23 +198,27 @@ class homeworkHandler(tornado.web.RequestHandler):
 
         if para == 'view':
             homework_list = hd.fetch_all()
+            status_dict = {}
+            for hw in homework_list:
+                hw_id = hw['homework_id']
+                assert hw_id
+                submission = sbd.fetch_one_submission(username, hw_id)
+                if not submission:
+                    status_dict[hw_id] = 'notsubmit'
+                else:
+                    status_dict[hw_id] = submission['status']
+                    assert status_dict[hw_id] != 'notsubmit'
             self.render('homework.html', cookie_name=username,
-                        homework_list=homework_list, is_admin=adm.is_admin(username))
+                        homework_list=homework_list,
+                        is_admin=adm.is_admin(username),
+                        status_dict=status_dict)
 
         if para == 'assign':
             if not adm.is_admin(username):
                 self.redirect('/error')
             self.render('assign_homework.html', cookie_name=username,
                         is_admin=adm.is_admin(username))
-        '''
-        http://localhost/homework/view
-        http://localhost/homework/view?id=
-        (admin can download all the homework)
 
-        http://localhost/homework/assign
-        (only admin can do that)
-
-        '''
 
     def post(self, para):
         if para == 'view':
@@ -221,6 +234,9 @@ class homeworkHandler(tornado.web.RequestHandler):
         date_ = time.strftime('%Y-%m-%d %H:%M:%S')
         deadline = self.get_argument('homework_deadline', '2013-01-08 23:57:32')
         hd.insert(title, author, content, date_, deadline)
+        homework_id = hd.get_last_id()
+        # TODO: try catch
+        os.mkdir(os.path.join('data', 'homework', 'hw_' + str(homework_id)))
         self.redirect('/')
 
 

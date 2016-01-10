@@ -37,8 +37,6 @@
                                                 if status == 'submitted' green
                                                 if status == 'rated' //已经评分过 -->
                                             <!-- TODO: 改变不同状态颜色 -->
-                                            <!-- TODO: 因为我不太会模板语言中多重if的使用，所以只能这么写了，你看看
-                                            if elif else 怎么写。。？ -->
                                         {% if status == 'rated' %}
                                         <tr class="danger">
                                             <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
@@ -65,14 +63,12 @@
                                             <td><span class="glyphicon glyphicon-cloud-upload"></span> 我的上传</td>
                                             <td>
                                                 <!-- TODO: FORM UNHANDLED -->
-                                                <form role="form">
+                                                <form role="form" method="post">
                                                     <div class="form-group">
-                                                        <!-- TODO: THERE IS TEXTARE_NAME UNHANDLED -->
-                                                        <textarea class="form-control" rows="3" name=""></textarea>
+                                                        <textarea class="form-control" rows="3" name="submission_content"></textarea>
                                                     </div>
                                                     <div class="form-group">
-                                                        <!-- TODO: THERE IS FILE_NAME UNHANDLED -->
-                                                        <input type='file' name='file' class='form-control'>
+                                                        <input type='file' name='submission_files' class='form-control'>
                                                     </div>
                                                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交作业</button>
                                                 </form>
