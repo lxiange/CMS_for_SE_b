@@ -2,7 +2,7 @@
 {%include 'head.html'%}
 {%block content%}
 <ul>
-    {%if cookie_name%}
+    <!-- {%if cookie_name%} -->
     <div class="container-fluid">
         <div class="row content">
             {%include 'nav_vertical.html'%}
@@ -24,16 +24,39 @@
                                     <tbody>
                                         <tr>
                                             <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                                            <td>张天</td>
+                                            <!-- <td>张天</td> -->
+                                            <td>{{homework_info['author']}}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
-                                            <td>2016/01/08 00:49</td>
+                                            <!-- <td>2016/01/08 00:49</td> -->
+                                            <td>{{homework_info['deadline']}}</td>
                                         </tr>
+                                        <!--    根据status判断提交状态
+                                                if status == 'notsubmit' red
+                                                if status == 'submitted' green
+                                                if status == 'rated' //已经评分过 -->
+                                            <!-- TODO: 改变不同状态颜色 -->
+                                            <!-- TODO: 因为我不太会模板语言中多重if的使用，所以只能这么写了，你看看
+                                            if elif else 怎么写。。？ -->
+                                        {% if status == 'rated' %}
+                                        <tr class="danger">
+                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                            <td>已评分，作业已完成</td>
+                                        </tr>
+                                        {% end %}
+                                        {% if status == 'submitted' %}
+                                        <tr class="danger">
+                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                            <td>已提交，待评分</td>
+                                        </tr>
+                                        {% end %}
+                                        {% if status == 'notsubmit' %}
                                         <tr class="danger">
                                             <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
                                             <td>未提交</td>
                                         </tr>
+                                        {% end %}
                                         <tr>
                                             <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
                                             <td>有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求</td>
@@ -64,7 +87,8 @@
             </div>
         </div>
     </div>
-    {%else%}
+    <!-- {% else %}
     <li>no cookiename</li>
-    {%end%}
+    {% end %} -->
 </ul>
+{%end%}

@@ -69,9 +69,10 @@ cur.execute("CREATE TABLE submission (\
                 content VARCHAR(1000000),\
                 date_ VARCHAR(100),\
                 homework_id INTEGER,\
-                file_path VARCHAR(500))")
-cur.execute("INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (1000, 'root', 'first commit', 'this is the content', '2013-01-08 23:57:32', 1000, '/homework/1/111.rar'))
+                file_path VARCHAR(500),\
+                status VARCHAR(100))")
+cur.execute("INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (1000, 'root', 'first commit', 'this is the content', '2013-01-08 23:57:32', 1000, '/homework/1/111.rar', 'submitted'))
 
 cur.execute("CREATE TABLE resource (\
                 resource_id INTEGER PRIMARY KEY AUTOINCREMENT,\

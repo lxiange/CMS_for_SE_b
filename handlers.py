@@ -9,6 +9,7 @@ from dao import ui
 from dao import ad
 from dao import adm
 from dao import hd
+from dao import sbd
 
 
 class logoutHandler(tornado.web.RequestHandler):
@@ -125,7 +126,23 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
         if not username:
             self.redirect('/error')
 
-        self.render('submit_homework.html', cookie_name=username, is_admin=adm.is_admin(username))
+        homework_id = int(self.get_argument('hw_id', '0'))
+        if homework_id == 0:
+            # cann't get homework id
+            self.redirect('/error')
+
+        homework_info = hd.fetch_by_id(homework_id)
+        assert homework_info
+        status = 'notsubmit'
+        submission = sbd.fetch_by_homework_id(homework_id)
+        if not submission:
+            status='notsubmit'
+        else:
+            status=submission['status']
+        self.render('submit_homework.html', cookie_name=username,
+                    is_admin=adm.is_admin(username),
+                    homework_info=homework_info,
+                    status=status)
 
     def post(self):
         pass
@@ -139,7 +156,8 @@ class announcementHandler(tornado.web.RequestHandler):
         if not adm.is_admin(username):
             self.redirect('/error')
 
-        self.render('announcement.html', cookie_name=username, is_admin=adm.is_admin(username))
+        self.render('announcement.html', cookie_name=username,
+                    is_admin=adm.is_admin(username))
         '''
         http://localhost/announcement/view
         http://localhost/announcement/view?id=
@@ -156,7 +174,7 @@ class announcementHandler(tornado.web.RequestHandler):
         author = username
         content = self.get_argument('announcement_content')
         date_ = time.strftime('%Y-%m-%d %H:%M:%S')
-        
+
         ad.insert(title, author, content, date_)
         self.redirect('/')
 
@@ -177,7 +195,8 @@ class homeworkHandler(tornado.web.RequestHandler):
         if para == 'assign':
             if not adm.is_admin(username):
                 self.redirect('/error')
-            self.render('assign_homework.html', cookie_name=username, is_admin=adm.is_admin(username))
+            self.render('assign_homework.html', cookie_name=username,
+                        is_admin=adm.is_admin(username))
         '''
         http://localhost/homework/view
         http://localhost/homework/view?id=
@@ -205,7 +224,6 @@ class homeworkHandler(tornado.web.RequestHandler):
         self.redirect('/')
 
 
-
 class uploadResourceHandler(tornado.web.RequestHandler):
     """docstring for uploadResourceHandler"""
 
@@ -214,7 +232,8 @@ class uploadResourceHandler(tornado.web.RequestHandler):
         if not adm.is_admin(username):
             self.redirect('/error')
 
-        self.render('upload_resource.html', cookie_name=username, is_admin=adm.is_admin(username))
+        self.render('upload_resource.html', cookie_name=username,
+                    is_admin=adm.is_admin(username))
 
 
 class errorHandler(tornado.web.RequestHandler):

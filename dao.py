@@ -205,6 +205,12 @@ class HomeworkDao(DaoBase):
     def __init__(self, arg):
         super(HomeworkDao, self).__init__(arg)
 
+    def fetch_by_id(self, homework_id):
+        self.cur.execute("SELECT * FROM homework WHERE homework_id=?",
+                         (homework_id,))
+        res = self.cur.fetchone()
+        return res
+
     def fetch_all(self):
         '''fetch all homework.
            return the list  of homework.
@@ -226,20 +232,47 @@ class HomeworkDao(DaoBase):
             self.conn.commit()
 
 
-class SubmissionDao(object):
+class SubmissionDao(DaoBase):
     """docstring for SubmissionDao"""
 
     def __init__(self, arg):
         super(SubmissionDao, self).__init__(arg)
 
     def fetch(self, username):
-        '''fetch someone's submission '''
+        '''fetch someone's submission return a list of dict'''
+        self.cur.execute("SELECT * FROM submission where author=?", (username,))
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_by_homework_id(self, homework_id):
+        self.cur.execute("SELECT * FROM submission where homework_id = ?",
+                         (homework_id,))
+        res = self.cur.fetchone()
+        return res
 
     def has_submitted(self, username, homework_id):
         '''someone has submitted the homework'''
+        self.cur.execute("SELECT * FROM submission where username = ? and homework_id = ?",
+                         (username, homework_id))
+        res = self.cur.fetchone()
+        if res:
+            return True
+        else:
+            return False
 
     def insert(self, *args):
         '''add a submit'''
+        try:
+            self.cur.execute("INSERT INTO submission"
+                             "(author, title, content, date_, homework_id, file_path, status)"
+                             "VALUES (?, ?, ?, ?, ?, ?, ?)", args)
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
 
 
 class ResourceDao(DaoBase):
@@ -287,6 +320,7 @@ ui = UserInfo('data.db3')
 ad = AnnouncementDao('data.db3')
 adm = AdminDao('data.db3')
 hd = HomeworkDao('data.db3')
+sbd = SubmissionDao('data.db3')
 
 if __name__ == '__main__':
     print(ui.fetch_all())
