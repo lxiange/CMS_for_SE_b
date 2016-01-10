@@ -7,7 +7,6 @@
         <div class="row content">
             {%include 'nav_vertical.html'%}
             <div class="col-sm-9 text-left">
-                <!-- HOMEWORK -->
                 <div class="row">
                     <div class="panel panel-info">
                         <div class="panel-heading">这里是作业详情 Panel</div>
@@ -24,27 +23,24 @@
                                     <tbody>
                                         <tr>
                                             <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                                            <!-- <td>张天</td> -->
                                             <td>{{homework_info['author']}}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
-                                            <!-- <td>2016/01/08 00:49</td> -->
                                             <td>{{homework_info['deadline']}}</td>
                                         </tr>
                                         <!--    根据status判断提交状态
                                                 if status == 'notsubmit' red
                                                 if status == 'submitted' green
                                                 if status == 'rated' //已经评分过 -->
-                                            <!-- TODO: 改变不同状态颜色 -->
                                         {% if status == 'rated' %}
-                                        <tr class="danger">
+                                        <tr class="success">
                                             <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
                                             <td>已评分，作业已完成</td>
                                         </tr>
                                         {% end %}
                                         {% if status == 'submitted' %}
-                                        <tr class="danger">
+                                        <tr class="warning">
                                             <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
                                             <td>已提交，待评分</td>
                                         </tr>

@@ -7,7 +7,6 @@
         <div class="row content">
             {%include 'nav_vertical.html'%}
             <div class="col-sm-9 text-left">
-                <!-- HOMEWORK -->
                 <div class="row">
                     <div class="panel-group" id="accordion2">
                         {%for hw in homework_list%}
@@ -49,13 +48,13 @@
                                                 if status == 'rated' //已经评分过 -->
 
                                                 {% if status_dict[hw['homework_id']] == 'rated' %}
-                                                    <tr class="danger">
+                                                    <tr class="success">
                                                         <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
                                                         <td>已评分，作业已完成</td>
                                                     </tr>
                                                 {% end %}
                                                 {% if status_dict[hw['homework_id']] == 'submitted' %}
-                                                    <tr class="danger">
+                                                    <tr class="warning">
                                                         <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
                                                         <td>已提交，待评分</td>
                                                     </tr>
@@ -103,7 +102,6 @@
             </div>
         </div>
     </div>
-    <!-- HOMEWORK DETAIL -->
     {%else%}
     <li>no cookiename</li>
     {%end%}
