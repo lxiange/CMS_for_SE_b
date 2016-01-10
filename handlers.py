@@ -13,6 +13,7 @@ from dao import adm
 from dao import hd
 from dao import sbd
 
+# TODO: split this file
 
 class logoutHandler(tornado.web.RequestHandler):
     """docstring for logoutHandler"""
@@ -38,10 +39,13 @@ class indexHandler(tornado.web.RequestHandler):
         res = ud.check_pass(name, password)
         if res:
             self.set_cookie('stuID', name)
+            # TODO: set cookie time
+            # TODO: set secure cookie
             self.redirect('/')
         else:
             pass
             # TODO(lxiange): wrong password
+            self.redirect('/')
 
 
 class registerHandler(tornado.web.RequestHandler):
@@ -147,19 +151,27 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
                     status=status)
 
     def post(self):
-        # submission_content = self.get_argument('submission_content')
-        # print(self.request.files)
-        # submission_files = self.request.files.get('submission_files')
-        # print(submission_files)
-        # homework_id = int(self.get_argument('hw_id', '0'))
-        # for sb_file in submission_files:
-        #     filename = sb_file['filename']
-        #     # TODO: try catch
-        #     filepath = os.path.join('data/homework',str(homework_id),filename)
-        #     with open(filepath,'wb') as upfile:
-        #         upfile.write(sb_file['body'])
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+        submission_content = self.get_argument('submission_content')
+        submission_files = self.request.files.get('submission_files')
+        homework_id = int(self.get_argument('hw_id', '0'))
+        assert len(submission_files) == 1
+        for sb_file in submission_files:
+            filename = sb_file['filename']
+            # TODO: try catch
+            filepath = os.path.join(
+                'data', 'homework', 'hw_' + str(homework_id), filename)
+            # TODO: this method is unsafe, handle the comflict.
+            with open(filepath, 'wb') as upfile:
+                upfile.write(sb_file['body'])
         # TODO: find a better file upload way.
-        self.redirect('/homework')
+        sbd.insert(username, '', submission_content,
+                   time.strftime('%Y-%m-%d %H:%M:%S'),
+                   homework_id, filepath, 'submitted')
+        # title is ''
+        self.redirect('/homework/view')
 
 
 class announcementHandler(tornado.web.RequestHandler):
@@ -172,7 +184,6 @@ class announcementHandler(tornado.web.RequestHandler):
 
         self.render('announcement.html', cookie_name=username,
                     is_admin=adm.is_admin(username))
-
 
     def post(self):
         '''only admin can post'''
@@ -218,7 +229,6 @@ class homeworkHandler(tornado.web.RequestHandler):
                 self.redirect('/error')
             self.render('assign_homework.html', cookie_name=username,
                         is_admin=adm.is_admin(username))
-
 
     def post(self, para):
         if para == 'view':

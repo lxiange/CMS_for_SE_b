@@ -11,93 +11,48 @@
         });
     });
 </script>
-<ul>
-    {%if cookie_name%}
-    <div class="container-fluid">
-        <div class="row content">
-            {%include 'nav_vertical.html'%}
-            <div class="col-sm-9 text-left">
-                <div class="row">
-                    <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#demo"> <span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介 </button><br><br>
-                </div>
-                <div>
-                    <div id="demo" class="row collapse">
-                        <!-- COURSE SUMMARY -->
-                        <div class="row">
-                            <div class="col-sm-12 well">
-                                <div>
-                                    <h1>软件工程</h1>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <p>Where software is built.</p>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>姓名</th>
-                                                        <th>职务</th>
-                                                        <th>联系方式</th>
-                                                        <th>发私信</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>张天</td>
-                                                        <td>教授</td>
-                                                        <td>zt@nju.edu.cn</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mary</td>
-                                                        <td>助教</td>
-                                                        <td>mary@example.com</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- ANNOUNCEMENT -->
-                <div class="row">
-                    <div class="panel-group" id="accordion1">
-                        {% for anno in announcements %}
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <!-- TODO: 此处如果在anno['title']中出现空格可能有点小问题 -->
-                                <a data-toggle="collapse" data-parent="#accordion1" href={{"#announcement_collapse"+anno['title']}}> {{anno['title']}} <span class="label label-danger">New！</span></a> </h4>
-                            </div>
-                            <div id={{"announcement_collapse"+anno['title']}} class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="table-responsive">
+<!-- TODO: 页面底部会有滚动条，，看看能不能去掉。。 -->
+
+{%if cookie_name%}
+<div class="container-fluid">
+    <div class="row content">
+        {%include 'nav_vertical.html'%}
+        <div class="col-sm-9 text-left">
+            <div class="row">
+                <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#demo"> <span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介 </button><br><br>
+            </div>
+            <div>
+                <div id="demo" class="row collapse">
+                    <!-- COURSE SUMMARY -->
+                    <div class="row">
+                        <div class="col-sm-12 well">
+                            <div>
+                                <h1>软件工程</h1>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p>Where software is built.</p>
+                                    </div>
+                                    <div class="col-sm-6">
                                         <table class="table table-hover">
                                             <thead>
-                                                <colgroup>
-                                                <col width='20%'></col>
-                                                <col width='80%'></col>
-                                                </colgroup>
+                                                <tr>
+                                                    <th>姓名</th>
+                                                    <th>职务</th>
+                                                    <th>联系方式</th>
+                                                    <th>发私信</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                                <tr><h5>
-                                                    <span class="label label-success">考试相关</span>
-                                                    <span class="label label-danger">重要</span></h5>
+                                                <tr>
+                                                    <td>张天</td>
+                                                    <td>教授</td>
+                                                    <td>zt@nju.edu.cn</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                                                    <td>{{anno['author']}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-time"></span> 发布时间</td>
-                                                    <td>{{anno['date_']}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-comment"></span> 公告内容</td>
-                                                    <td>{{anno['content']}}</td>
+                                                    <td>Mary</td>
+                                                    <td>助教</td>
+                                                    <td>mary@example.com</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -105,15 +60,61 @@
                                 </div>
                             </div>
                         </div>
-                        {%end%}
                     </div>
+                </div>
+            </div>
+
+            <!-- ANNOUNCEMENT -->
+            <div class="row">
+                <div class="panel-group" id="accordion1">
+                    {% for anno in announcements %}
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <!-- TODO: 此处如果在anno['title']中出现空格可能有点小问题 -->
+                            <a data-toggle="collapse" data-parent="#accordion1" href={{"#announcement_collapse"+anno['title']}}> {{anno['title']}} <span class="label label-danger">New！</span></a> </h4>
+                        </div>
+                        <div id={{"announcement_collapse"+anno['title']}} class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <colgroup>
+                                            <col width='20%'></col>
+                                            <col width='80%'></col>
+                                            </colgroup>
+                                        </thead>
+                                        <tbody>
+                                            <tr><h5>
+                                                <span class="label label-success">考试相关</span>
+                                                <span class="label label-danger">重要</span></h5>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
+                                                <td>{{anno['author']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-time"></span> 发布时间</td>
+                                                <td>{{anno['date_']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-comment"></span> 公告内容</td>
+                                                <td>{{anno['content']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%end%}
                 </div>
             </div>
         </div>
     </div>
-    {%else%}
-    <!-- 游客浏览页面 -->
-    <li>no cookiename</li>
-    {%end%}
-</ul>
+</div>
+{%else%}
+<!-- 游客浏览页面 -->
+<li>no cookiename</li>
+{%end%}
 {%end%}

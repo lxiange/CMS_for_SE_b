@@ -1,95 +1,93 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-<ul>
-    {%if cookie_name%}
-    <div class="container-fluid">
-        <div class="row content">
-            {%include 'nav_vertical.html'%}
-            <div class="col-sm-9 text-left">
-                <div class="row">
-                    <div class="panel-group" id="accordion2">
-                        {%for hw in homework_list%}
-                        <!-- TODO: 把这部分内容填完 -->
-                        <div class="panel panel-danger">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}> {{hw['title']}} <span class="label label-danger">New！</span></a> </h4>
-                            </div>
-                            <div id={{"homework_collapse"+hw['title']}} class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="alert alert-warning fade in">
-                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <span class="glyphicon glyphicon-info-sign"></span> 请务必在 {{hw['deadline']}} 前提交。
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <colgroup>
-                                                <col width='20%'></col>
-                                                <col width='80%'></col>
-                                                </colgroup>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                                                    <td>{{hw['author']}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-time"></span> 发布日期</td>
-                                                    <td>{{hw['date_']}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
-                                                    <td>{{hw['deadline']}}</td>
-                                                </tr>
-                                                <!--  TODO:
-                                                if status == 'notsubmit' red
-                                                if status == 'submitted' green
-                                                if status == 'rated' //已经评分过 -->
-
-                                                {% if status_dict[hw['homework_id']] == 'rated' %}
-                                                    <tr class="success">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>已评分，作业已完成</td>
-                                                    </tr>
-                                                {% end %}
-                                                {% if status_dict[hw['homework_id']] == 'submitted' %}
-                                                    <tr class="warning">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>已提交，待评分</td>
-                                                    </tr>
-                                                {% end %}
-                                                {% if status_dict[hw['homework_id']] == 'notsubmit' %}
-                                                    <tr class="danger">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>未提交</td>
-                                                    </tr>
-                                                {% end %}
-                                                <tr>
-                                                    <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
-                                                    <td>
-                                                        {{hw['content']}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+{%if cookie_name%}
+<div class="container-fluid">
+    <div class="row content">
+        {%include 'nav_vertical.html'%}
+        <div class="col-sm-9 text-left">
+            <div class="row">
+                <div class="panel-group" id="accordion2">
+                    {%for hw in homework_list%}
+                    <!-- TODO: 把这部分内容填完 -->
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}> {{hw['title']}} <span class="label label-danger">New！</span></a> </h4>
+                        </div>
+                        <div id={{"homework_collapse"+hw['title']}} class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="alert alert-warning fade in">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <span class="glyphicon glyphicon-info-sign"></span> 请务必在 {{hw['deadline']}} 前提交。
                                 </div>
-                                <div class="panel-footer">
-                                    <div class="row">
-                                        <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success btn-md'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <colgroup>
+                                            <col width='20%'></col>
+                                            <col width='80%'></col>
+                                            </colgroup>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
+                                                <td>{{hw['author']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-time"></span> 发布日期</td>
+                                                <td>{{hw['date_']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
+                                                <td>{{hw['deadline']}}</td>
+                                            </tr>
+                                            <!--  TODO:
+                                            if status == 'notsubmit' red
+                                            if status == 'submitted' green
+                                            if status == 'rated' //已经评分过 -->
+                                            {% if status_dict[hw['homework_id']] == 'rated' %}
+                                                <tr class="success">
+                                                    <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                    <td>已评分，作业已完成</td>
+                                                </tr>
+                                            {% end %}
+                                            {% if status_dict[hw['homework_id']] == 'submitted' %}
+                                                <tr class="warning">
+                                                    <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                    <td>已提交，待评分</td>
+                                                </tr>
+                                            {% end %}
+                                            {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                                <tr class="danger">
+                                                    <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                    <td>未提交</td>
+                                                </tr>
+                                            {% end %}
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
+                                                <td>
+                                                    {{hw['content']}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <!-- TODO: 如果已经上传就别显示这个按钮了，添加一个查看的按钮跳转到作业详情就行了，并且可以把此项作业显示的样式变一下 -->
+                                <div class="row">
+                                    <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success btn-md'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
                                 </div>
                             </div>
                         </div>
-                        {%end%}
                     </div>
+                    {%end%}
                 </div>
             </div>
         </div>
     </div>
-    {%else%}
-    <li>no cookiename</li>
-    {%end%}
-</ul>
+</div>
+{%else%}
+<li>no cookiename</li>
+{%end%}
 {%end%}

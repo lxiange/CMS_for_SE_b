@@ -7,6 +7,7 @@
     <title>NJU CSer</title>
         <link href="{{static_url('css/bootstrap.css')}}" rel='stylesheet' type='text/css'> 
         <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"> 
+        <!-- TODO: 加载谷歌的字体真心大丈夫？。。还是下载到本地吧！ -->
         <script src="{{static_url('js/jquery-2.1.4.min.js')}}"></script>  
         <script src="{{static_url('js/bootstrap.js')}}"></script>  
         <script>
@@ -39,6 +40,7 @@
             doUpdate();
         </script>
         <script>
+        // TODO: 这个函数好像没用啊。。？
             function sureToLogout()
             {
                 var res=confirm('确定注销登录吗？');

@@ -107,3 +107,8 @@ try:
     os.mkdir('data/homework')
 except:
     pass
+
+try:
+    os.mkdir('data/homework/hw_1000')
+except:
+    pass

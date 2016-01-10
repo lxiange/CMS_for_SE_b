@@ -1,6 +1,9 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
+
+
+<!-- TODO: 把这侧边栏删了吧，或者继承自统一的那个模板 -->
 <div class="col-md-offset-1 col-md-3 sidenav">
   <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="200">
     <li {% if request.path == '/' %} class="active"{% end %}><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
@@ -8,6 +11,7 @@
     <li {% if request.path == '/resource' %} class="active"{% end %}><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
   </ul><br>
 </div>
+
 <div class='col-md-6'>
     <link href='/static/bootstrap-datetimepicker.min.css' rel='stylesheet' type='text/css' media='screen'>
     <div class="panel panel-primary">
