@@ -13,7 +13,7 @@
 </div>
 
 <div class='col-md-6'>
-    <link href='/static/bootstrap-datetimepicker.min.css' rel='stylesheet' type='text/css' media='screen'>
+    <link href='../static/css/bootstrap-datetimepicker.min.css' rel='stylesheet' type='text/css' media='screen'>
     <div class="panel panel-primary">
         <div class="panel-heading">编辑个人信息</div>
         <div class="panel-body">
@@ -75,18 +75,19 @@
         </div>
     </div>
 </div>
-<script src='/static/bootstrap-datetimepicker.min.js' charset='utf-8'></script>
-<script src='/static/bootstrap-datetimepicker.zh-CN.js' charset='utf-8'></script>
+<script src='../static/js/bootstrap-datetimepicker.js' charset='utf-8'></script>
+<script src='../static/js/bootstrap-datetimepicker.zh-CN.js' charset='utf-8'></script>
 <script>
 $('.form_date').datetimepicker({
     language:  'zh-CN',
-    weekStart: 0,
-    todayBtn:  0,
-    autoclose: 0,
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
     todayHighlight: 1,
     startView: 4,
     minView: 2,
-    forceParse: 0
+    forceParse: 0,
+    format: 'yyyy-mm-dd'
 });
 </script>
 {%end%}
