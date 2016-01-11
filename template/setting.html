@@ -10,8 +10,8 @@
   </ul><br>
 </div>
 
+<link href='../static/css/bootstrap-datepicker.css' rel='stylesheet' type='text/css' media='screen'>
 <div class='col-md-6'>
-    <link href='../static/css/bootstrap-datetimepicker.min.css' rel='stylesheet' type='text/css' media='screen'>
     <div class="panel panel-primary">
         <div class="panel-heading">编辑个人信息</div>
         <div class="panel-body">
@@ -51,11 +51,12 @@
                     <label class='col-md-3 control-label'>出生日期</label>
                     <div class="col-md-9">
                         <div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
-                            <input type='text' name='birth' class="form-control" {%if birthday%}value="{{birthday}}"{%end%} size='16'>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input id="datepicker2" type='text' name='birth' class="form-control" {%if birthday%} value="{{birthday}}" {%end%} size='16'>
+                            <span id="datepickerBtn" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
                 </div>
+                <!-- FIXME: datepicker已经完成，但修改信息后并未保存？请检查这个表单是否工作正常？ -->
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>联系方式</label>
                     <div class='col-md-9'>
@@ -73,19 +74,12 @@
         </div>
     </div>
 </div>
-<script src='../static/js/bootstrap-datetimepicker.js' charset='utf-8'></script>
-<script src='../static/js/bootstrap-datetimepicker.zh-CN.js' charset='utf-8'></script>
+<script src='../static/js/bootstrap-datepicker.js' charset='utf-8'></script>
 <script>
-$('.form_date').datetimepicker({
-    language:  'zh-CN',
-    weekStart: 1,
-    todayBtn:  1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 4,
-    minView: 2,
-    forceParse: 0,
-    format: 'yyyy-mm-dd'
+$("#datepicker2").datepicker({
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    dateFormat: "yy-mm-dd"
 });
 </script>
 {%end%}

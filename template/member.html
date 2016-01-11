@@ -3,32 +3,28 @@
 {%block content%}
 <div class="container-fluid">
     <div class="row content">
-        <div class="col-sm-10 col-sm-offset-2 col-lg-10 col-lg-offset-2 main">           
+        <div class="col-sm-10 col-lg-10 col-lg-offset-1 main">
+            <h2 class="page-header">所有成员</h2>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Tables</h1>
-                </div>
-            </div><!--/.row-->
-                    
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Advanced Table</div>
+                    <div class="panel">
                         <div class="panel-body">
                             <table data-toggle="table" data-show-toggle="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                                 <thead>
-<!--                                 <colgroup>
-                                <col width='5%'></col>
-                                <col width='20%'></col>
-                                <col width='80%'></col>
-                                <col width='80%'></col>
-                                </colgroup> -->
-                                <tr>
-                                    <th data-field="name" data-sortable="true" >姓名</th>
-                                    <th data-field="njuid" data-sortable="true">学号</th>
-                                    <th data-field="email"  data-sortable="true">邮箱</th>
-                                    <th data-field="mobile" data-sortable="true">联系方式</th>
-                                </tr>
+                                    <!-- <colgroup>
+                                        <col width='10%'></col>
+                                        <col width='20%'></col>
+                                        <col width='30%'></col>
+                                        <col width='30%'></col>
+                                        <col width='10%'></col>
+                                    </colgroup> -->
+                                    <tr>
+                                        <th data-field="name" data-sortable="true" >姓名</th>
+                                        <th data-field="njuid" data-sortable="true">学号</th>
+                                        <th data-field="email"  data-sortable="true">邮箱</th>
+                                        <th data-field="mobile" data-sortable="true">联系方式</th>
+                                        <th data-field="option">操作</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -36,25 +32,22 @@
                                         <td>131220000</td>
                                         <td>root@root.com</td>
                                         <td>13333333333</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="#"><span class="glyphicon glyphicon-ok"></span></a>
+                                                <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
+                                            </div>
+                                        </td>
                                     </tr>
-                                     <tr>
-                                        <td>12</td>
-                                        <td>51</td>
-                                        <td>13</td>
-                                        <td>62</td>
-                                    </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div><!--/.row-->  
+            </div><!--/.row-->
         </div><!--/.main-->
-
-    <script src="{{static_url('js/chart.min.js')}}"></script>
-    <script src="{{static_url('js/chart-data.js')}}"></script>
-    <script src="{{static_url('js/bootstrap-datepicker.js')}}"></script>
+    </div>
+</div>
     <script src="{{static_url('js/bootstrap-table.js')}}"></script>
     <script>
         !function ($) {
@@ -71,8 +64,4 @@
           if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
         })
     </script>   
-
-
-    </div>
-</div>
 {%end%}

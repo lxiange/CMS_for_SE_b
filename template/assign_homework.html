@@ -1,6 +1,7 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
+<link href='../static/css/bootstrap-datepicker.css' rel='stylesheet' type='text/css' media='screen'>
 {%if cookie_name%}
 <div class="container-fluid">
     <div class="row content">
@@ -22,9 +23,10 @@
                                     <label class='col-md-2 control-label' for="homework_deadline" ><span class="glyphicon glyphicon-time"></span> 截止日期</label>
                                     <div class="col-md-9">
                                         <div class="input-group date form_date col-md-4" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
-                                            <input type='text' name='homework_deadline' class="form-control" size='16' readonly>
+                                            <input id="datepicker" type='text' name='homework_deadline' class="form-control" size='16' readonly>
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
+                                        <!-- FIXME: 同样是datepicker采取的这种办法是在这里放一个下拉菜单选择时、分，你看如何？ -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -45,4 +47,12 @@
 {%else%}
 <li>no cookiename</li>
 {%end%}
+<script src='../static/js/bootstrap-datepicker.js' charset='utf-8'></script>
+<script>
+$("#datepicker").datepicker({
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    dateFormat: "yy-mm-dd"
+});
+</script>
 {%end%}

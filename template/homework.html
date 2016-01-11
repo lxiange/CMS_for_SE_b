@@ -84,8 +84,14 @@
                                     <div class="row">
                                         <!-- <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a> -->
 
-                                        <!-- TODO: 直接disable不太优雅啊，，建议改成一个“查看提交详情”的颜色不同的按钮。 -->
-                                        <a href="/submit_homework?hw_id={{hw['homework_id']}}" {% if status_dict[hw['homework_id']] != 'notsubmit' %} disabled {%end%}><button class='col-sm-offset-10 btn btn-success' {% if status_dict[hw['homework_id']] != 'notsubmit' %} disabled {%end%}> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                        {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                            <a href="/submit_homework?hw_id={{hw['homework_id']}}" ><button class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                        {%end%}
+                                        {% if status_dict[hw['homework_id']] != 'notsubmit' %}
+                                            <a href="/submit_homework?hw_id={{hw['homework_id']}}" ><button class='col-sm-offset-10 btn btn-info'> 查看提交详情 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                        {%end%}
+
+
                                     </div>
                                 </div>
                             </div>

@@ -5,61 +5,61 @@
         <meta name='viewport' content='width=device-width,initial-scale=1.0'>
         <link href="{{static_url('css/bootstrap.css')}}" rel='stylesheet' type='text/css'>
         <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{static_url('dist/css/bootstrapValidator.css')}}"/>
         <script src="{{static_url('js/jquery-2.1.4.min.js')}}"></script>
         <script src="{{static_url('js/bootstrap.js')}}"></script>
-        <link rel="stylesheet" href="{{static_url('dist/css/bootstrapValidator.css')}}"/>
-        <script type="text/javascript" src="{{static_url('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+        <script type="text/javascript" src="{{static_url('js/bootstrap.min.js')}}"></script>
         <script type="text/javascript" src="{{static_url('dist/js/bootstrapValidator.js')}}"></script>
         <script type="text/javascript" src="{{static_url('dist/js/language/zh_CN.js')}}"></script>
     </head>
     <body style="font-family:Lato, Microsoft Yahei;">
         <script>
-        {%if same_name%}
-            alert('该用户名已被注册，请换一个再试试');
-        {%end%}
+            {%if same_name%}
+                alert('该用户名已被注册，请换一个再试试');
+            {%end%}
         </script>
         <script src='/static/registerCheck.js'></script>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand">NJU Software Engineering</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-left">
-                <li {% if request.path == '/' %} class="active" {% end %}><a href="/">
-                    <span class="glyphicon glyphicon-education"> 课程信息</a>
-                </li>
-                <li {% if request.path == '/member/1' %} class="active" {% end %}><a href="/member/1">
-                    <span class="glyphicon glyphicon-globe"> 成员</a>
-                </li>
-                <li {% if request.path == '/chatting/1' %} class="active" {% end %}>
-                    <a href="/chatting/1"><span class="glyphicon glyphicon-bullhorn"> 吐槽</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form action='/' method='post' class='form-inline navbar-form navbar-right'>
-                        <div class='form-group'>
-                            <label class='sr-only'>用户名</label>
-                            <input type='text' name='username' class='form-control'                     placeholder='用户名'/>
-                        </div>
-                        <div class='form-group'>
-                            <label class='sr-only'>密码</label>
-                            <input type='password' name='password' class='form-control'                 placeholder='密码'/>
-                        </div>
-                        <button type='submit' class='btn btn-success'>登录</button>
-                    </form>
-                </li>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a class="navbar-brand">NJU Software Engineering</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li {% if request.path == '/' %} class="active" {% end %}><a href="/">
+                            <span class="glyphicon glyphicon-education"> 课程信息</a>
+                        </li>
+                        <li {% if request.path == '/member/1' %} class="active" {% end %}><a href="/member/1">
+                            <span class="glyphicon glyphicon-globe"> 成员</a>
+                        </li>
+                        <li {% if request.path == '/chatting/1' %} class="active" {% end %}>
+                            <a href="/chatting/1"><span class="glyphicon glyphicon-bullhorn"> 吐槽</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <form action='/' method='post' class='form-inline navbar-form navbar-right'>
+                                <div class='form-group'>
+                                    <label class='sr-only'>用户名</label>
+                                    <input type='text' name='username' class='form-control'                     placeholder='用户名'/>
+                                </div>
+                                <div class='form-group'>
+                                    <label class='sr-only'>密码</label>
+                                    <input type='password' name='password' class='form-control'                 placeholder='密码'/>
+                                </div>
+                                <button type='submit' class='btn btn-success'>登录</button>
+                            </form>
+                        </li>
 
-            </ul>
-        </div>
-    </div>
-</nav>
-<br/>
-<br/>
-<br/>
-<br/>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
         <div class='container' role='content'>
             <div class="container-fluid">
                 <div class="row">
@@ -146,7 +146,6 @@
                                         </div>
                                         <div class="form-group text-center">
                                             <button type="submit" class="btn btn-primary btn-lg btn-block" onclick='return checkform()'>成为新用户</button>
-                                            <!-- TODO: 已改，但我这边可以工作。及时检测。 -->
                                         </div>
                                     </form>
                                 </div>

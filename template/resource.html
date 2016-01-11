@@ -9,11 +9,11 @@
       <div class="row">
         <div class="panel-group" id="accordion2">
           {%for res in resource_list%}
-          <div class="panel panel-danger">
+          <div class="panel panel-info">
             <div class="panel-heading">
               <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion2" href={{"#resource_collapse"+res['title']}}>
-                {{res['title']}}<span class="label label-danger">New！</span></a>
+                {{res['title']}} <span class="label label-info"></span></a>
                 </h4>
               </div>
               <div id={{"resource_collapse"+res['title']}} class="panel-collapse collapse in">
@@ -32,15 +32,17 @@
                           <td>{{res['author']}}</td>
                         </tr>
                         <tr>
-                          <td><span class="glyphicon glyphicon-list"></span> 描述</td>
+                          <td><span class="glyphicon glyphicon-time"></span> 时间</td>
                           <td>{{res['date_']}}</td>
                         </tr>
-
                         <tr>
-                          <td><span class="glyphicon glyphicon-tasks"></span> 内容</td>
+                          <td><span class="glyphicon glyphicon-comment"></span> 摘要</td>
                           <td>{{res['content']}}</td>
                         </tr>
-                        <!-- TODO: 添加一个下载附件的区域。 -->
+                        <tr>
+                          <td><span class="glyphicon glyphicon-file"></span> 文件</td>
+                          <td></td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -53,7 +55,6 @@
       </div>
     </div>
   </div>
-  <!-- HOMEWORK DETAIL -->
   {%else%}
   <li>no cookiename</li>
   {%end%}
