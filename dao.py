@@ -292,8 +292,31 @@ class ResourceDao(DaoBase):
     def __init__(self, arg):
         super(ResourceDao, self).__init__(arg)
 
+    def get_last_id(self):
+        self.cur.execute("SELECT last_insert_rowid()")
+        res = self.cur.fetchone()
+        return res[0]
+
     def fetch(self, username):
-        '''fetch someone's resources'''
+        '''fetch someone's resource'''
+
+    def fetch_all(self):
+        self.cur.execute("SELECT * FROM resource")
+        res = self.cur.fetchall()
+        return res
+
+    def insert(self, *args):
+        try:
+            self.cur.execute("INSERT INTO resource"
+                             "(author, title, content, date_, file_path)"
+                             "VALUES (?, ?, ?, ?, ?)", args)
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
 
 
 class AdminDao(DaoBase):
@@ -332,6 +355,7 @@ ad = AnnouncementDao('data.db3')
 adm = AdminDao('data.db3')
 hd = HomeworkDao('data.db3')
 sbd = SubmissionDao('data.db3')
+rd = ResourceDao('data.db3')
 
 if __name__ == '__main__':
     print(ui.fetch_all())

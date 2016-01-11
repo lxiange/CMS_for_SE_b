@@ -8,11 +8,12 @@
     <div class="col-sm-9 text-left">
       <div class="row">
         <div class="panel-group" id="accordion2">
+          {%for res in resource_list%}
           <div class="panel panel-danger">
             <div class="panel-heading">
               <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion2" href="#resource_collapse1">
-                资源标题<span class="label label-danger">New！</span></a>
+                {{res['title']}}<span class="label label-danger">New！</span></a>
                 </h4>
               </div>
               <div id="resource_collapse1" class="panel-collapse collapse in">
@@ -28,26 +29,25 @@
                       <tbody>
                         <tr>
                           <td><span class="glyphicon glyphicon-user"></span> 发布者</td>
-                          <td>张天</td>
+                          <td>{{res['author']}}</td>
                         </tr>
                         <tr>
                           <td><span class="glyphicon glyphicon-list"></span> 描述</td>
-                          <td>2016/01/08 00:49</td>
+                          <td>{{res['date_']}}</td>
                         </tr>
-                        <tr class="danger">
-                          <td><span class="glyphicon glyphicon-stats"></span> 状态</td>
-                          <td>未下载</td>
-                        </tr>
+
                         <tr>
                           <td><span class="glyphicon glyphicon-tasks"></span> 内容</td>
-                          <td>有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求有很多要求</td>
+                          <td>{{res['content']}}</td>
                         </tr>
+                        <!-- TODO: 添加一个下载附件的区域。 -->
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
+          {%end%}
           </div>
         </div>
       </div>

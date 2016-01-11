@@ -33,6 +33,8 @@ class MyApp(tornado.web.Application):
             (r'/submit_homework', submitHomeworkHandler),
             (r'/upload_resource', uploadResourceHandler),
             (r'/announcement', announcementHandler),
+            (r'/resource', resourceHandler),
+            (r'/download/(\w+)', downloadHandler),
             (r'/error', errorHandler),              # DONE
             # (r'/post',postHandler),
             # (r'/user/(\w+)',userHandler),

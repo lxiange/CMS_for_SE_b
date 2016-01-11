@@ -12,8 +12,10 @@ from dao import ad
 from dao import adm
 from dao import hd
 from dao import sbd
+from dao import rd
 
 # TODO: split this file
+
 
 class logoutHandler(tornado.web.RequestHandler):
     """docstring for logoutHandler"""
@@ -157,15 +159,18 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
         submission_content = self.get_argument('submission_content')
         submission_files = self.request.files.get('submission_files')
         homework_id = int(self.get_argument('hw_id', '0'))
-        assert len(submission_files) == 1
-        for sb_file in submission_files:
-            filename = sb_file['filename']
-            # TODO: try catch
-            filepath = os.path.join(
-                'data', 'homework', 'hw_' + str(homework_id), filename)
-            # TODO: this method is unsafe, handle the comflict.
-            with open(filepath, 'wb') as upfile:
-                upfile.write(sb_file['body'])
+
+        filepath = ''
+        if submission_files:
+            assert len(submission_files) == 1
+            for sb_file in submission_files:
+                filename = sb_file['filename']
+                # TODO: try catch
+                filepath = os.path.join(
+                    'data', 'homework', 'hw_' + str(homework_id), filename)
+                # TODO: this method is unsafe, handle the comflict.
+                with open(filepath, 'wb') as upfile:
+                    upfile.write(sb_file['body'])
         # TODO: find a better file upload way.
         sbd.insert(username, '', submission_content,
                    time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -250,6 +255,37 @@ class homeworkHandler(tornado.web.RequestHandler):
         self.redirect('/')
 
 
+class resourceHandler(tornado.web.RequestHandler):
+    """docstring for resourceHandler"""
+
+    def get(self):
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        resource_list = rd.fetch_all()
+
+        self.render('resource.html', cookie_name=username,
+                    is_admin=adm.is_admin(username),
+                    resource_list=resource_list)
+
+
+class downloadHandler(tornado.web.RequestHandler):
+    """docstring for downloadHandler"""
+
+    def get(self, para):
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        self.set_header('Content-Type', 'application/octet-stream')
+        if para == 'resource':
+            pass
+            # try:
+            #     with open(os.path.join('data','resource',))
+            #     self.write()
+
+
 class uploadResourceHandler(tornado.web.RequestHandler):
     """docstring for uploadResourceHandler"""
 
@@ -260,6 +296,36 @@ class uploadResourceHandler(tornado.web.RequestHandler):
 
         self.render('upload_resource.html', cookie_name=username,
                     is_admin=adm.is_admin(username))
+
+    def post(self):
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        title = self.get_argument('resource_title')
+        author = username
+        content = self.get_argument('resource_content')
+        date_ = time.strftime('%Y-%m-%d %H:%M:%S')
+
+        resource_id = rd.get_last_id()
+        filepath = ''
+        resource_files = self.request.files.get('resource_files')
+        if resource_files:
+            os.mkdir(os.path.join('data', 'resource', 'res_' + str(resource_id)))
+            assert len(resource_files) == 1
+            for res_file in resource_files:
+                filename = res_file['filename']
+                # TODO: try catch
+                filepath = os.path.join(
+                    'data', 'resource', 'res_' + str(resource_id), filename)
+                # TODO: this method is unsafe, handle the comflict.
+                with open(filepath, 'wb') as upfile:
+                    upfile.write(res_file['body'])
+        # TODO: find a better file upload way.
+
+        rd.insert(author, title, content, date_, filepath)
+        # TODO: homework is (title, author, ...), unify them.
+        self.redirect('/resource')
 
 
 class errorHandler(tornado.web.RequestHandler):
