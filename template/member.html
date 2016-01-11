@@ -1,7 +1,6 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-{%if cookie_name%}
 <div class="container-fluid">
     <div class="row content">
         <div class="col-sm-10 col-sm-offset-2 col-lg-10 col-lg-offset-2 main">           
@@ -16,7 +15,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Advanced Table</div>
                         <div class="panel-body">
-                            <table data-toggle="table" data-show-toggle="true"  data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <table data-toggle="table" data-show-toggle="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                                 <thead>
 <!--                                 <colgroup>
                                 <col width='5%'></col>
@@ -51,70 +50,6 @@
                     </div>
                 </div>
             </div><!--/.row-->  
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Basic Table</div>
-                        <div class="panel-body">
-                            <table data-toggle="table" >
-                                <thead>
-                                <tr>
-                                    <th data-field="id" data-align="right">Item ID</th>
-                                    <th data-field="name">Item Name</th>
-                                    <th data-field="price">Item Price</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Styled Table</div>
-                        <div class="panel-body">
-                            <table data-toggle="table" id="table-style" data-row-style="rowStyle">
-                                <thead>
-                                <tr>
-                                    <th data-field="id" data-align="right" >Item ID</th>
-                                    <th data-field="name" >Item Name</th>
-                                    <th data-field="price" >Item Price</th>
-                                </tr>
-                                </thead>
-                            </table>
-                            <script>
-                                $(function () {
-                                    $('#hover, #striped, #condensed').click(function () {
-                                        var classes = 'table';
-                            
-                                        if ($('#hover').prop('checked')) {
-                                            classes += ' table-hover';
-                                        }
-                                        if ($('#condensed').prop('checked')) {
-                                            classes += ' table-condensed';
-                                        }
-                                        $('#table-style').bootstrapTable('destroy')
-                                            .bootstrapTable({
-                                                classes: classes,
-                                                striped: $('#striped').prop('checked')
-                                            });
-                                    });
-                                });
-                            
-                                function rowStyle(row, index) {
-                                    var classes = ['active', 'success', 'info', 'warning', 'danger'];
-                            
-                                    if (index % 2 === 0 && index / 2 < classes.length) {
-                                        return {
-                                            classes: classes[index / 2]
-                                        };
-                                    }
-                                    return {};
-                                }
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </div><!--/.row-->  
         </div><!--/.main-->
 
     <script src="{{static_url('js/chart.min.js')}}"></script>
@@ -140,8 +75,4 @@
 
     </div>
 </div>
-{%else%}
-<!-- TODO: 游客浏览页面 -->
-<li>no cookiename</li>
-{%end%}
 {%end%}

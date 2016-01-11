@@ -69,9 +69,9 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <!-- FIXME: 此处如果在anno['title']中出现空格可能有点小问题 -->
-                            <a data-toggle="collapse" data-parent="#accordion1" href={{"#announcement_collapse"+anno['title']}}> {{anno['title']}} <span class="label label-danger">New！</span></a> </h4>
+                            <a data-toggle="collapse" data-parent="#accordion1" href={{"#announcement_collapse"+str(anno['announcement_id'])}}> {{anno['title']}} <span class="label label-danger">New！</span></a> </h4>
                         </div>
-                        <div id={{"announcement_collapse"+anno['title']}} class="panel-collapse collapse in">
+                        <div id={{"announcement_collapse"+str(anno['announcement_id'])}} class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover">

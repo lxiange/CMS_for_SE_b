@@ -1,1 +1,7 @@
-404
+{%extends 'main.html'%}
+{%include 'head.html'%}
+{%block content%}
+<div style="background:#000; color:#FFF;text-align: center">
+        <img src="{{static_url('img/404.jpg')}}"  alt="出错了" height="150%" width="105%"/>
+</div>
+{%end%}

@@ -331,7 +331,18 @@ class uploadResourceHandler(tornado.web.RequestHandler):
 class errorHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.render('error.html')
+        username = self.get_cookie('stuID')
+        self.render('error.html', cookie_name=username)
 
     def post(self):
         self.redirect('/error')
+
+
+class memberHandler(tornado.web.RequestHandler):
+
+    def get(self):
+        username = self.get_cookie('stuID')
+        self.render('member.html', cookie_name=username)
+
+    def post(self):
+        self.render('member.html', cookie_name=username)

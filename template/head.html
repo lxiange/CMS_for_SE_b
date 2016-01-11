@@ -11,12 +11,12 @@
                 <li {% if request.path == '/' %} class="active" {% end %}><a href="/">
                     <span class="glyphicon glyphicon-education"> 课程信息</a>
                 </li>
-                <li {% if request.path == '/member/1' %} class="active" {% end %}><a href="/member/1">
+                <li {% if request.path == '/member' %} class="active" {% end %}><a href="/member">
                     <span class="glyphicon glyphicon-globe"> 成员</a>
                 </li>
-                <li {% if request.path == '/chatting/1' %} class="active" {% end %}>
+                <!-- <li {% if request.path == '/chatting/1' %} class="active" {% end %}>
                     <a href="/chatting/1"><span class="glyphicon glyphicon-bullhorn"> 吐槽</a>
-                </li>
+                </li> -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
             {%if not cookie_name%}
