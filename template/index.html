@@ -12,8 +12,6 @@
     });
 </script>
 
-<!-- TODO: 页面底部会有滚动条，，看看能不能去掉。。 -->
-
 {%if cookie_name%}
 <div class="container-fluid">
     <div class="row content">
@@ -64,14 +62,13 @@
                 </div>
             </div>
 
-            <!-- ANNOUNCEMENT -->
             <div class="row">
                 <div class="panel-group" id="accordion1">
                     {% for anno in announcements %}
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <!-- TODO: 此处如果在anno['title']中出现空格可能有点小问题 -->
+                                <!-- FIXME: 此处如果在anno['title']中出现空格可能有点小问题 -->
                             <a data-toggle="collapse" data-parent="#accordion1" href={{"#announcement_collapse"+anno['title']}}> {{anno['title']}} <span class="label label-danger">New！</span></a> </h4>
                         </div>
                         <div id={{"announcement_collapse"+anno['title']}} class="panel-collapse collapse in">
@@ -114,7 +111,7 @@
     </div>
 </div>
 {%else%}
-<!-- 游客浏览页面 -->
+<!-- TODO: 游客浏览页面 -->
 <li>no cookiename</li>
 {%end%}
 {%end%}

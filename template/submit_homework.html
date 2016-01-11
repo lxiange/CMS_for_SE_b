@@ -6,10 +6,16 @@
         {%include 'nav_vertical.html'%}
         <div class="col-sm-9 text-left">
             <div class="row">
+                <ol class="breadcrumb">
+                    <li><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li><a href="/homework/view">全部作业</a></li>
+                    <li class="active"> {{homework_info['title']}} </li>
+                </ol>
+            </div>
+            <div class="row">
                 <div class="panel panel-info">
-                    <div class="panel-heading">这里是作业详情 Panel</div>
+                    <div class="panel-heading">{{homework_info['title']}}</div>
                     <div class="panel-body">
-                        <h2>{{homework_info['title']}}</h2>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -54,11 +60,9 @@
                                         <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
                                         <td>{{homework_info['content']}}</td>
                                     </tr>
-                                    <!-- TODO: 同理，如果判断已经上传过了就别提交了。以后可以添加个修改作业的功能。 -->
                                     <tr>
                                         <td><span class="glyphicon glyphicon-cloud-upload"></span> 我的上传</td>
                                         <td>
-                                            <!-- TODO: FORM UNHANDLED -->
                                             <form role="form"
                                                 action="/submit_homework?hw_id={{homework_info['homework_id']}}"
                                                 enctype="multipart/form-data"
@@ -69,7 +73,7 @@
                                                 <div class="form-group">
                                                     <input type='file' name='submission_files' class='form-control'>
                                                 </div>
-                                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交作业</button>
+                                                <button {% if status == 'notsubmit' %} type="submit" {%end%} class="btn btn-success" {% if status != 'notsubmit' %} disabled {%end%}><span class="glyphicon glyphicon-ok"></span> 提交作业</button>
                                             </form>
                                         </td>
                                     </tr>

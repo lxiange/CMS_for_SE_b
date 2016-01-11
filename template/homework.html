@@ -9,17 +9,24 @@
             <div class="row">
                 <div class="panel-group" id="accordion2">
                     {%for hw in homework_list%}
-                    <!-- TODO: 把这部分内容填完 -->
-                    <div class="panel panel-danger">
+                    <div class="panel panel-default" {% if status_dict[hw['homework_id']] == 'notsubmit' %} class="panel-danger"{%end%}>
                         <div class="panel-heading">
-                            <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}> {{hw['title']}} <span class="label label-danger">New！</span></a> </h4>
+                            <div class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}>
+                                {{hw['title']}}
+                                {% if status_dict[hw['homework_id']] == 'notsubmit' %}<span class="label label-danger">未提交!</span>{%end%}
+                                {% if status_dict[hw['homework_id']] == 'submitted' %}<span class="label label-success">已提交待评分</span>{%end%}
+                                {% if status_dict[hw['homework_id']] == 'rated' %}<span class="label label-success">已评分</span>{%end%}
+                            </a>
+                            </div>
                         </div>
                         <div id={{"homework_collapse"+hw['title']}} class="panel-collapse collapse in">
                             <div class="panel-body">
+                                {% if status_dict[hw['homework_id']] == 'notsubmit' %}
                                 <div class="alert alert-warning fade in">
                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <span class="glyphicon glyphicon-info-sign"></span> 请务必在 {{hw['deadline']}} 前提交。
                                 </div>
+                                {%end%}
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
@@ -41,7 +48,7 @@
                                                 <td><span class="glyphicon glyphicon-time"></span> 截止日期</td>
                                                 <td>{{hw['deadline']}}</td>
                                             </tr>
-                                            <!--  TODO:
+                                            <!--  
                                             if status == 'notsubmit' red
                                             if status == 'submitted' green
                                             if status == 'rated' //已经评分过 -->
@@ -74,9 +81,9 @@
                                 </div>
                             </div>
                             <div class="panel-footer">
-                                <!-- TODO: 如果已经上传就别显示这个按钮了，添加一个查看的按钮跳转到作业详情就行了，并且可以把此项作业显示的样式变一下 -->
                                 <div class="row">
-                                    <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success btn-md'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                    <!-- <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a> -->
+                                    <a href="/submit_homework?hw_id={{hw['homework_id']}}" {% if status_dict[hw['homework_id']] != 'notsubmit' %} disabled {%end%}><button class='col-sm-offset-10 btn btn-success' {% if status_dict[hw['homework_id']] != 'notsubmit' %} disabled {%end%}> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
                                 </div>
                             </div>
                         </div>
