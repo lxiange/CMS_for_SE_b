@@ -99,8 +99,8 @@ class UserInfo(DaoBase):
 
     def fetch_user_info(self):
         self.cur.execute("SELECT user.username, user.njuid, user_info.email, user_info.mobile "
-            "FROM user, user_info "
-            "WHERE user.username = user_info.username")
+                         "FROM user, user_info "
+                         "WHERE user.username = user_info.username")
         res = self.cur.fetchall()
         return res
 
@@ -310,6 +310,12 @@ class ResourceDao(DaoBase):
     def fetch_all(self):
         self.cur.execute("SELECT * FROM resource")
         res = self.cur.fetchall()
+        return res
+
+    def fetch_by_id(self, resource_id):
+        self.cur.execute("SELECT * FROM resource WHERE resource_id =?",
+                         (resource_id,))
+        res = self.cur.fetchone()
         return res
 
     def insert(self, *args):

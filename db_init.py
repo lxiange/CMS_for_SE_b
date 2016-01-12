@@ -82,7 +82,7 @@ cur.execute("CREATE TABLE resource (\
                 date_ VARCHAR(100),\
                 file_path VARCHAR(500))")
 cur.execute("INSERT INTO resource VALUES (?, ?, ?, ?, ?, ?)",
-            (1000, 'root', 'first resource', 'this is the first resource', '2013-01-08 23:57:32', '/resource/111.rar'))
+            (1000, 'root', 'first resource', 'this is the first resource', '2013-01-08 23:57:32', ''))
 
 
 conn.commit()

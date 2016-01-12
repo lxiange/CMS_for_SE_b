@@ -278,12 +278,16 @@ class downloadHandler(tornado.web.RequestHandler):
         if not username:
             self.redirect('/error')
 
-        self.set_header('Content-Type', 'application/octet-stream')
+        assert para in ['resource', 'homework', 'submission']
         if para == 'resource':
-            pass
-            # try:
-            #     with open(os.path.join('data','resource',))
-            #     self.write()
+            data_id = int(self.get_argument('res_id'))
+            data = rd.fetch_by_id(data_id)
+
+        self.set_header('Content-Type', 'application/octet-stream')
+        filename = os.path.basename(data['file_path'])
+        self.set_header('Content-Disposition', 'attachment; filename=' + filename)
+        with open(data['file_path'], 'rb') as f:
+            self.write(f.read())
 
 
 class uploadResourceHandler(tornado.web.RequestHandler):

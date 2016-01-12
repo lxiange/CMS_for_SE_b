@@ -1,7 +1,7 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-{%if cookie_name%}
+{%import os%}
 <div class="container-fluid">
   <div class="row content">
     {%include 'nav_vertical.html'%}
@@ -39,10 +39,15 @@
                           <td><span class="glyphicon glyphicon-comment"></span> 摘要</td>
                           <td>{{res['content']}}</td>
                         </tr>
+                        {%if res['file_path']%}
                         <tr>
                           <td><span class="glyphicon glyphicon-file"></span> 文件</td>
-                          <td></td>
+                          <td>
+                          {{os.path.basename(res['file_path'])}}
+                          <a href="/download/resource?res_id={{res['resource_id']}}" ><button class='col-sm-offset-10 btn btn-success'> 下载 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                          </td>
                         </tr>
+                        {%end%}
                       </tbody>
                     </table>
                   </div>
@@ -55,7 +60,4 @@
       </div>
     </div>
   </div>
-  {%else%}
-  <li>no cookiename</li>
-  {%end%}
   {%end%}
