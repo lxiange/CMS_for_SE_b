@@ -1,7 +1,9 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-<link href='../static/css/bootstrap-datepicker.css' rel='stylesheet' type='text/css' media='screen'>
+
+<link href="{{static_url('css/bootstrap-datepicker3.min.css')}}" rel='stylesheet' type='text/css' media='screen'>
+<link rel="stylesheet" href="{{static_url('dist/css/bootstrapValidator.css')}}"/>
 {%if cookie_name%}
 <div class="container-fluid">
     <div class="row content">
@@ -9,30 +11,35 @@
         <div class="col-sm-9 text-left">
             <div class="row">
                 <div class="panel panel-info">
-                    <div class="panel-heading">发布作业</div>
+                    <div class="panel-heading"><span class="glyphicon glyphicon-paperclip"></span> 发布作业</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="post">
+                        <form id="defaultForm" class="form-horizontal" role="form" method="post">
                             <div class="row">
                                 <div class="form-group">
-                                    <label class='col-md-2 control-label' for="homework_title"><span class="glyphicon glyphicon-info-sign"></span> 标题</label>
+                                    <label class='col-md-2 control-label' for="homework_title"><span class="glyphicon glyphicon-info-sign"></span> 标题*</label>
                                     <div class="col-md-9">
-                                        <input class='form-control' type='text' name='homework_title' id="homework_title" required>
+                                        <input class='form-control' type='text' name='homework_title' id="homework_title" placeholder="请输入标题，必填" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class='col-md-2 control-label' for="homework_deadline" ><span class="glyphicon glyphicon-time"></span> 截止日期</label>
+                                    <label class='col-md-2 control-label' for="homework_deadline" ><span class="glyphicon glyphicon-time"></span> 截止日期*</label>
                                     <div class="col-md-9">
-                                        <div class="input-group date form_date col-md-4" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
-                                            <input id="datepicker" type='text' name='homework_deadline' class="form-control" size='16' readonly>
+                                        <div class="input-group col-md-5">
+                                            <input id="datepicker" type='text' name='homework_deadline' class="form-control" placeholder="点击此处选择日期，必填" size='16'>
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
-                                        <!-- FIXME: 同样是datepicker采取的这种办法是在这里放一个下拉菜单选择时、分，你看如何？ -->
+                                        <p class="help-block">YYYY-MM-DD h:m:s</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class='col-md-2 control-label' for="homework_content" ><span class="glyphicon glyphicon-list"></span> 要求</label>
+                                    <label class='col-md-2 control-label' for="homework_content" ><span class="glyphicon glyphicon-list"></span> 要求*</label>
                                     <div class="col-md-9">
-                                        <textarea class="form-control" rows="3" name='homework_content' id="homework_content" required></textarea>
+                                        <textarea class="form-control" rows="3" name='homework_content' id="homework_content" placeholder="请输入作业要求，必填" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-8">
+                                        <div id="errors"></div>
                                     </div>
                                 </div>
                             </div>
@@ -47,12 +54,42 @@
 {%else%}
 <li>no cookiename</li>
 {%end%}
-<script src='../static/js/bootstrap-datepicker.js' charset='utf-8'></script>
+
+<script src="{{static_url('js/bootstrap-datepicker.zh-CN.js')}}" charset="UTF-8"></script>
+<script src="{{static_url('js/bootstrap-datepicker.min.js')}}" charset='utf-8'></script>
+<script type="text/javascript" src="{{static_url('dist/js/bootstrapValidator.js')}}"></script>
+<script type="text/javascript" src="{{static_url('dist/js/language/zh_CN.js')}}"></script>
 <script>
 $("#datepicker").datepicker({
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    dateFormat: "yy-mm-dd"
+    format: "yyyy-mm-dd 00:00:00",
+    language: "zh-CN",
+    orientation: "bottom auto",
+    autoclose: true,
+    todayHighlight: true
+});
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        message: '栏位无效。',
+        container: '#errors',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            homework_deadline: {
+                message: '请遵照格式YYYY-MM-DD h:m:s填写“截止日期”项。',
+                validators: {
+                    notEmpty: {
+                        message: '“截止日期”项：请遵照格式YYYY-MM-DD h:m:s填写合法时间。'
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD h:m:s'
+                    }
+                }
+            },
+        }
+    });
 });
 </script>
 {%end%}

@@ -12,11 +12,11 @@
           <div class="panel panel-info">
             <div class="panel-heading">
               <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion2" href={{"#resource_collapse"+res['title']}}>
+              <a data-toggle="collapse" href={{"#resource_collapse"+res['title']}}>
                 {{res['title']}} <span class="label label-info"></span></a>
                 </h4>
               </div>
-              <div id={{"resource_collapse"+res['title']}} class="panel-collapse collapse in">
+              <div id={{"resource_collapse"+res['title']}} class="panel-collapse collapse">
                 <div class="panel-body">
                   <div class="table-responsive">
                     <table class="table table-hover">
@@ -44,7 +44,7 @@
                           <td><span class="glyphicon glyphicon-file"></span> 文件</td>
                           <td>
                           {{os.path.basename(res['file_path'])}}
-                          <a href="/download/resource?res_id={{res['resource_id']}}" ><button class='col-sm-offset-10 btn btn-success'> 下载 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                          <a href="/download/resource?res_id={{res['resource_id']}}" ><button class='btn btn-sm btn-info'> 点此下载 <span class="glyphicon glyphicon-cloud-download"></span></button></a>
                           </td>
                         </tr>
                         {%end%}

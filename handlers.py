@@ -56,7 +56,8 @@ class registerHandler(tornado.web.RequestHandler):
     """
 
     def get(self):
-        self.render('register.html', same_name=False)
+        username = self.get_cookie('stuID')
+        self.render('register.html', same_name=False, cookie_name=username)
 
     def post(self):
         name = self.get_argument('username')
@@ -65,7 +66,8 @@ class registerHandler(tornado.web.RequestHandler):
 
         res = ud.user_exist(name)
         if res:  # user exists
-            self.render('register.html', same_name=True)
+            username = self.get_cookie('stuID')
+            self.render('register.html', same_name=True, cookie_name=username)
         else:
             ud.insert(name, password, njuid, 'stu')
             ui.insert(name, '', '', '', '', '')
@@ -96,6 +98,7 @@ class settingHandler(tornado.web.RequestHandler):
         self.render(
             'setting.html',
             cookie_name=username,
+            is_admin=adm.is_admin(username),
             **info_dict
         )
 

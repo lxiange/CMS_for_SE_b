@@ -21,9 +21,9 @@
                                     <tr>
                                         <th data-field="name" data-sortable="true" >姓名</th>
                                         <th data-field="njuid" data-sortable="true">学号</th>
-                                        <th data-field="email"  data-sortable="true">邮箱</th>
-                                        <th data-field="mobile" data-sortable="true">联系方式</th>
-                                        <th data-field="option">操作</th>
+                                        <th data-field="email">邮箱</th>
+                                        <th data-field="mobile">联系方式</th>
+                                        {% if is_admin%}<th data-field="option">操作</th>{%end%}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,15 +33,17 @@
                                         <td>{{user_info['njuid']}}</td>
                                         <td>{{user_info['email']}}</td>
                                         <td>{{user_info['mobile']}}</td>
-                                        <td>
+                                        {% if is_admin%}<td>
                                             <div class="action-buttons">
                                                 {%if is_admin%}
                                                 <!-- TODO(lxiange): 添加设置助教以及删除操作 -->
-                                                <a href="#"><span class="glyphicon glyphicon-ok"></span></a>
-                                                <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
+                                                <!-- FIXME(lxiange): 通过注册功能是否容易实现？ -->
+                                                <a href="#"><span class="glyphicon glyphicon-ok"></span></a>&nbsp;&nbsp;
+                                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;&nbsp;
+                                                <a href="#">助教</a>
                                                 {%end%}
                                             </div>
-                                        </td>
+                                        </td>{%end%}
                                     </tr>
                                     {%end%}
                                 </tbody>

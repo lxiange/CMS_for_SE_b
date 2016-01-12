@@ -1,21 +1,14 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-<!-- TODO: 把这侧边栏删了吧，或者继承自统一的那个模板 -->
-<div class="col-md-offset-1 col-md-3 sidenav">
-  <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="200">
-    <li {% if request.path == '/' %} class="active"{% end %}><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
-    <li {% if request.path == '/homework/view' %} class="active"{% end %}><a href="/homework/view"><span class="glyphicon glyphicon-paperclip"></span> 查看作业</a></li>
-    <li {% if request.path == '/resource' %} class="active"{% end %}><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
-  </ul><br>
-</div>
+<link rel="stylesheet" href="{{static_url('dist/css/bootstrapValidator.css')}}"/>
 
-<link href='../static/css/bootstrap-datepicker.css' rel='stylesheet' type='text/css' media='screen'>
+{%include 'nav_vertical.html'%}
 <div class='col-md-6'>
     <div class="panel panel-primary">
         <div class="panel-heading">编辑个人信息</div>
         <div class="panel-body">
-            <form action='/setting' method='post' class='form-horizontal' enctype='multipart/form-data'>
+            <form id="defaultForm" action='/setting' method='post' class='form-horizontal' enctype='multipart/form-data'>
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>用户名</label>
                     <div class='col-md-9'>
@@ -23,12 +16,25 @@
                     </div>
                 </div>
                 <div class='form-group'>
-                    <label class='col-md-3 control-label'>邮箱</label>
+                    <label class='col-md-3 control-label'>邮箱*</label>
                     <div class='col-md-9'>
-                        <input type='text' name='email' class='form-control' {%if email%}value="{{email}}"{%end%}>
+                        <input type='text' name='email' class='form-control' required {%if email%}value="{{email}}"{%end%}>
                     </div>
                 </div>
-                <!-- TODO: 添加真实姓名这一栏，并要求邮箱，姓名，手机号，为必填项 -->
+                <!-- FIXME(lxiange): 未处理学号表单 -->
+                <div class='form-group'>
+                    <label class='col-md-3 control-label'>学号*</label>
+                    <div class='col-md-9'>
+                        <input type='text' name='njuid' class='form-control' required>
+                    </div>
+                </div>
+                <!-- FIXME(lxiange): 未处理真实姓名表单，注意name='truename' -->
+                <div class='form-group'>
+                    <label class='col-md-3 control-label'>真实姓名*</label>
+                    <div class='col-md-9'>
+                        <input type='text' name='truename' class='form-control' required>
+                    </div>
+                </div>
 <!--                 <div class='form-group'>
                     <label class='col-md-3 control-label'>上传新头像</label>
                     <div class='col-md-9'>
@@ -48,21 +54,19 @@
                         </div>
                     </div>
                 </div>
-                <!-- 这个出生日期不对啊，，这个datepicker只能选当前月好像。。 -->
-                <div class='form-group'>
+                <!-- <div class='form-group'>
                     <label class='col-md-3 control-label'>出生日期</label>
                     <div class="col-md-9">
                         <div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
-                            <input id="datepicker2" type='text' name='birth' class="form-control" {%if birthday%} value="{{birthday}}" {%end%} size='16'>
+                            <input id="datepicker" type='text' name='birth' class="form-control" {%if birthday%} value="{{birthday}}" {%end%} size='16'>
                             <span id="datepickerBtn" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                </div>
-                <!-- FIXME: datepicker已经完成，但修改信息后并未保存？请检查这个表单是否工作正常？ -->
+                </div> -->
                 <div class='form-group'>
-                    <label class='col-md-3 control-label'>手机号</label>
+                    <label class='col-md-3 control-label'>手机号码*</label>
                     <div class='col-md-9'>
-                        <input type='text' name='mobile' class='form-control' {%if mobile%}value="{{mobile}}"{%end%}>
+                        <input type='text' name='mobile' class='form-control' {%if mobile%}value="{{mobile}}"{%end%} required>
                     </div>
                 </div>
                 <div class='form-group'>
@@ -76,12 +80,32 @@
         </div>
     </div>
 </div>
-<script src='../static/js/bootstrap-datepicker.js' charset='utf-8'></script>
+
+<script type="text/javascript" src="{{static_url('dist/js/bootstrapValidator.js')}}"></script>
+<script type="text/javascript" src="{{static_url('dist/js/language/zh_CN.js')}}"></script>
 <script>
-$("#datepicker2").datepicker({
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    dateFormat: "yy-mm-dd"
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        message: '栏位无效。',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            homework_deadline: {
+                message: '请遵照格式YYYY-MM-DD h:m:s填写“截止日期”项。',
+                validators: {
+                    notEmpty: {
+                        message: '“截止日期”项：请遵照格式YYYY-MM-DD h:m:s填写合法时间。'
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD h:m:s'
+                    }
+                }
+            },
+        }
+    });
 });
 </script>
 {%end%}

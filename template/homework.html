@@ -6,27 +6,34 @@
     <div class="row content">
         {%include 'nav_vertical.html'%}
         <div class="col-sm-9 text-left">
+            <div class="alert alert-info fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>O(∩_∩)友情提示！</strong>  点击每项作业标题来展开作业详情。
+            </div>
             <div class="row">
                 <div class="panel-group" id="accordion2">
                     {%for hw in homework_list%}
                     <div class="panel panel-default" {% if status_dict[hw['homework_id']] == 'notsubmit' %} class="panel-danger"{%end%}>
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion2" href={{"#homework_collapse"+hw['title']}}>
+                                <a data-toggle="collapse" href={{"#homework_collapse"+str(hw['homework_id'])}}>
                                     {{hw['title']}}
-                                    {% if status_dict[hw['homework_id']] == 'notsubmit' %}<span class="label label-danger">未提交!</span>{%end%}
-                                    {% if status_dict[hw['homework_id']] == 'submitted' %}<span class="label label-success">已提交待评分</span>{%end%}
-                                    {% if status_dict[hw['homework_id']] == 'rated' %}<span class="label label-success">已评分</span>{%end%}
+                                    {%if not is_admin%}
+                                        {% if status_dict[hw['homework_id']] == 'notsubmit' %}<span class="label label-danger">未提交!</span>{%end%}
+                                        {% if status_dict[hw['homework_id']] == 'submitted' %}<span class="label label-success">已提交待评分</span>{%end%}
+                                        {% if status_dict[hw['homework_id']] == 'rated' %}<span class="label label-success">已评分</span>{%end%}
+                                    {%end%}
                                 </a>
                             </div>
                         </div>
-                        <div id={{"homework_collapse"+hw['title']}} class="panel-collapse collapse in">
+                        <div id={{"homework_collapse"+str(hw['homework_id'])}} class="panel-collapse collapse">
                             <div class="panel-body">
+                                {% if not is_admin%}
                                 {% if status_dict[hw['homework_id']] == 'notsubmit' %}
                                     <div class="alert alert-warning fade in">
                                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <span class="glyphicon glyphicon-info-sign"></span> 请务必在 {{hw['deadline']}} 前提交。
                                     </div>
-                                    {%end%}
+                                {%end%}{%end%}
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -52,24 +59,27 @@
                                                 if status == 'notsubmit' red
                                                 if status == 'submitted' green
                                                 if status == 'rated' //已经评分过 -->
-                                                {% if status_dict[hw['homework_id']] == 'rated' %}
-                                                    <tr class="success">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>已评分，作业已完成</td>
-                                                    </tr>
-                                                {% end %}
-                                                {% if status_dict[hw['homework_id']] == 'submitted' %}
-                                                    <tr class="warning">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>已提交，待评分</td>
-                                                    </tr>
-                                                {% end %}
-                                                {% if status_dict[hw['homework_id']] == 'notsubmit' %}
-                                                    <tr class="danger">
-                                                        <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
-                                                        <td>未提交</td>
-                                                    </tr>
-                                                {% end %}
+                                                <!-- TODO(lxiange): 添加“过期作业”状态 -->
+                                                {%if not is_admin%}
+                                                    {% if status_dict[hw['homework_id']] == 'rated' %}
+                                                        <tr class="success">
+                                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                            <td>已评分，作业已完成</td>
+                                                        </tr>
+                                                    {% end %}
+                                                    {% if status_dict[hw['homework_id']] == 'submitted' %}
+                                                        <tr class="warning">
+                                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                            <td>已提交，待评分</td>
+                                                        </tr>
+                                                    {% end %}
+                                                    {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                                        <tr class="danger">
+                                                            <td><span class="glyphicon glyphicon-stats"></span> 提交状态</td>
+                                                            <td>未提交</td>
+                                                        </tr>
+                                                    {% end %}
+                                                {%end%}
                                                 <tr>
                                                     <td><span class="glyphicon glyphicon-tasks"></span> 要求</td>
                                                     <td>
@@ -84,13 +94,19 @@
                                     <div class="row">
                                         <!-- <a href="/submit_homework?hw_id={{hw['homework_id']}}"><button class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a> -->
 
-                                        {% if status_dict[hw['homework_id']] == 'notsubmit' %}
-                                            <a href="/submit_homework?hw_id={{hw['homework_id']}}" ><button class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                        {% if not is_admin %}
+                                            {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                                <a href="/submit_homework?hw_id={{hw['homework_id']}}" class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                            {%end%}
+                                            {% if status_dict[hw['homework_id']] != 'notsubmit' %}
+                                                <a href="/submit_homework?hw_id={{hw['homework_id']}}" class="col-sm-offset-10 btn btn-info"> 查看作业详情 <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                            {%end%}
                                         {%end%}
-                                        {% if status_dict[hw['homework_id']] != 'notsubmit' %}
-                                            <a href="/submit_homework?hw_id={{hw['homework_id']}}" ><button class='col-sm-offset-10 btn btn-info'> 查看提交详情 <span class="glyphicon glyphicon-chevron-right"></span></button></a>
+                                        <!-- TODO(lxiange): 删除作业按钮的具体操作，“下载全部学生作业”这个功能是否需要，即将所有作业打包下载。而不是自己到电脑上看。 -->
+                                        {%if is_admin%}
+                                            <a href="#" class="pull-right btn btn-danger"> 删除作业 <span class="glyphicon glyphicon-trash"></span></a>
+                                            <a href="#" class="pull-right btn btn-success"> 下载全部学生作业 <span class="glyphicon glyphicon-cloud-download"></span></a>
                                         {%end%}
-
 
                                     </div>
                                 </div>

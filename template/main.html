@@ -21,11 +21,11 @@
                     {
                         if(xmlhttp.responseText=='0')
                         {
-                            document.getElementById('msg').innerHTML="<a href='/message/1_1' class='h4 text-info navbar-text'><strong><i>新消息</i></a><label class='text-danger'>news</label>";
+                            document.getElementById('messageBtn').innerHTML="<a href='#' class='h4 text-info navbar-text'><strong><i>新消息</i></a><label class='text-danger'>news</label>";
                         }
                         else
                         {
-                            document.getElementById('msg').innerHTML="<a href='/message/1_1' class=''><span class='glyphicon glyphicon-comment'> 消息 </a>";
+                            document.getElementById('messageBtn').innerHTML="<a href='#' class=''><span class='glyphicon glyphicon-comment'> 消息 </a>";
                         }
                     }
                 }
@@ -43,6 +43,9 @@
             $(document).ready(function(){
                 $("#logoutBtn").click(function(){
                     $("#myModal").modal();
+                });
+                $("#messageBtn").click(function() {
+                    $("#messageModal").modal();
                 });
             });
             function logout(){
@@ -98,6 +101,80 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="logout()">继续注销</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Message Modal -->
+<div class="modal fade" id="messageModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">消息</h4>
+            </div>
+            <div class="modal-body">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active"><a href="#publicdiv" data-toggle="tab"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;公告</a></li>
+                        <li><a href="#privatediv" data-toggle="tab"><span class="glyphicon glyphicon-inbox"></span>&nbsp;收件箱</a></li>
+                        <li><a href="#newmsgdiv" data-toggle="tab"><span class="glyphicon glyphicon-envelope"></span>&nbsp;发送私信</a></li>
+                    </ul>
+                    <br>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="publicdiv" >
+                            <table id="publicmessagetable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;时间</th>
+                                        <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="privatediv">
+                            <table id="privatemessagetable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;时间</th>
+                                        <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;内容</th>
+                                        <th><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="newmsgdiv">
+                           <form id="newmsgform" action='' method='post' class='form-horizontal'>
+                                <div class='form-group'>
+                                    <label class='col-md-2 control-label'>收件人</label>
+                                    <div class='col-md-9'>
+                                        <input type='text' name='receiver' class='form-control' required>
+                                    </div>
+                                </div>
+                                <div class='form-group'>
+                                    <label class='col-md-2 control-label'>内容</label>
+                                    <div class='col-md-9'>
+                                        <textarea rows='5' type='text' name='messagecontent' class='form-control ' placeholder='键入内容' maxlength='100' required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-11 widget-right">
+                                        <button type="submit" class="btn btn-success btn-md pull-right"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;发送</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>

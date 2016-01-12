@@ -1,24 +1,13 @@
 {%extends 'main.html'%}
 {%include 'head.html'%}
 {%block content%}
-<script>
-    $(document).ready(function(){
-        $("#demo").on("hide.bs.collapse", function(){
-            $(".btn").html('<span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介');
-        });
-        $("#demo").on("show.bs.collapse", function(){
-            $(".btn").html('<span class="glyphicon glyphicon-collapse-up"></span> 收起课程简介');
-        });
-    });
-</script>
 
-{%if cookie_name%}
 <div class="container-fluid">
     <div class="row content">
         {%include 'nav_vertical.html'%}
         <div class="col-sm-9 text-left">
             <div class="row">
-                <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#demo"> <span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介 </button><br><br>
+                <button id="demoBtn" type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#demo"> <span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介 </button><br><br>
             </div>
             <div>
                 <div id="demo" class="row collapse">
@@ -38,7 +27,6 @@
                                                     <th>姓名</th>
                                                     <th>职务</th>
                                                     <th>联系方式</th>
-                                                    <th>发私信</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -110,8 +98,15 @@
         </div>
     </div>
 </div>
-{%else%}
-<!-- TODO: 游客浏览页面 -->
-<li>no cookiename</li>
-{%end%}
+
+<script>
+    $(document).ready(function(){
+        $("#demo").on("hide.bs.collapse", function(){
+            $("#demoBtn").html('<span class="glyphicon glyphicon-collapse-down"></span> 展开课程简介');
+        });
+        $("#demo").on("show.bs.collapse", function(){
+            $("#demoBtn").html('<span class="glyphicon glyphicon-collapse-up"></span> 收起课程简介');
+        });
+    });
+</script>
 {%end%}

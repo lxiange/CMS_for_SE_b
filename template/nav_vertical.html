@@ -1,21 +1,17 @@
 <div class="col-sm-3 sidenav">
   <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="200">
     <li {% if request.path == '/' %} class="active"{% end %}><a href="/"><span class="glyphicon glyphicon-list-alt"></span> 课程公告</a></li>
+    {% if cookie_name %}
     <li {% if request.path == '/homework/view' %} class="active"{% end %}><a href="/homework/view"><span class="glyphicon glyphicon-paperclip"></span> 查看作业</a></li>
     <li {% if request.path == '/resource' %} class="active"{% end %}><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
+    {% end%}
     {% if is_admin%}
       <li class="dropdown">
         <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> 老师/助教操作 <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="/announcement">
-            <span class="glyphicon glyphicon-pencil"></span> 发布公告</span>
-          </a></li>
-          <li><a href="/homework/assign">
-            <span class="glyphicon glyphicon-pencil"></span> 发布作业</span>
-          </a></li>
-          <li><a href="/upload_resource">
-            <span class="glyphicon glyphicon-pencil"></span> 上传资源</span>
-          </a></li>
+          <li><a href="/announcement">发布公告</a></li>
+          <li><a href="/homework/assign">发布作业</a></li>
+          <li><a href="/upload_resource">上传资源</a></li>
         </ul>
       </li>
     {% end %}
