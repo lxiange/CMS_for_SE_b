@@ -342,7 +342,17 @@ class memberHandler(tornado.web.RequestHandler):
 
     def get(self):
         username = self.get_cookie('stuID')
-        self.render('member.html', cookie_name=username)
+        if not username:
+            self.redirect('/error')
+
+        user_info_list = ui.fetch_user_info()
+        self.render('member.html', cookie_name=username,
+                    is_admin=adm.is_admin(username),
+                    user_info_list=user_info_list)
 
     def post(self):
-        self.render('member.html', cookie_name=username)
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        # TODO: del or send message or set TA

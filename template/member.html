@@ -27,18 +27,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {%for user_info in user_info_list%}
                                     <tr>
-                                        <td>张三</td>
-                                        <td>131220000</td>
-                                        <td>root@root.com</td>
-                                        <td>13333333333</td>
+                                        <td>{{user_info['username']}}</td>
+                                        <td>{{user_info['njuid']}}</td>
+                                        <td>{{user_info['email']}}</td>
+                                        <td>{{user_info['mobile']}}</td>
                                         <td>
                                             <div class="action-buttons">
+                                                {%if is_admin%}
+                                                <!-- TODO(lxiange): 添加设置助教以及删除操作 -->
                                                 <a href="#"><span class="glyphicon glyphicon-ok"></span></a>
                                                 <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
+                                                {%end%}
                                             </div>
                                         </td>
                                     </tr>
+                                    {%end%}
                                 </tbody>
                             </table>
                         </div>

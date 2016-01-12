@@ -97,6 +97,13 @@ class UserInfo(DaoBase):
         res = self.cur.fetchall()
         return res
 
+    def fetch_user_info(self):
+        self.cur.execute("SELECT user.username, user.njuid, user_info.email, user_info.mobile "
+            "FROM user, user_info "
+            "WHERE user.username = user_info.username")
+        res = self.cur.fetchall()
+        return res
+
     def update(self, username, info_dict):
         try:
             for k, v in info_dict.items():

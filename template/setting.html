@@ -28,12 +28,13 @@
                         <input type='text' name='email' class='form-control' {%if email%}value="{{email}}"{%end%}>
                     </div>
                 </div>
-                <div class='form-group'>
+                <!-- TODO: 添加真实姓名这一栏，并要求邮箱，姓名，手机号，为必填项 -->
+<!--                 <div class='form-group'>
                     <label class='col-md-3 control-label'>上传新头像</label>
                     <div class='col-md-9'>
                         <input type='file' name='headpic' class='form-control'>
                     </div>
-                </div>
+                </div> -->
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>性别</label>
                     <div class='col-md-9'>
@@ -47,6 +48,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 这个出生日期不对啊，，这个datepicker只能选当前月好像。。 -->
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>出生日期</label>
                     <div class="col-md-9">
@@ -58,7 +60,7 @@
                 </div>
                 <!-- FIXME: datepicker已经完成，但修改信息后并未保存？请检查这个表单是否工作正常？ -->
                 <div class='form-group'>
-                    <label class='col-md-3 control-label'>联系方式</label>
+                    <label class='col-md-3 control-label'>手机号</label>
                     <div class='col-md-9'>
                         <input type='text' name='mobile' class='form-control' {%if mobile%}value="{{mobile}}"{%end%}>
                     </div>

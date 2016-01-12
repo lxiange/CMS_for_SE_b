@@ -35,9 +35,9 @@ class MyApp(tornado.web.Application):
             (r'/announcement', announcementHandler),
             (r'/resource', resourceHandler),
             (r'/download/(\w+)', downloadHandler),
+            # (r'/user/(\w+)',userHandler),
             (r'/error', errorHandler),              # DONE
             # (r'/post',postHandler),
-            # (r'/user/(\w+)',userHandler),
             # (r'/blog/(\d+)',blogHandler),
             # (r'/comment',commentHandler),
             (r'.*', errorHandler),
