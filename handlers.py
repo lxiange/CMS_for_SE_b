@@ -30,13 +30,16 @@ class logoutHandler(tornado.web.RequestHandler):
 
 class aboutHandler(tornado.web.RequestHandler):
     """docstring for aboutHandler"""
+
     def get(self):
         username = self.get_cookie('stuID')
         self.render('error.html', cookie_name=username,
                     messages=md.fetch_message(username))
 
+
 class eggsHandler(tornado.web.RequestHandler):
     """docstring for eggHandler"""
+
     def get(self):
         username = self.get_cookie('stuID')
         self.render('eggs.html', cookie_name=username,
@@ -91,7 +94,8 @@ class registerHandler(tornado.web.RequestHandler):
 
     def get(self):
         username = self.get_cookie('stuID')
-        self.render('register.html', same_name=False, cookie_name=username)
+        self.render('register.html', same_name=False, cookie_name=username,
+                    messages=[])
 
     def post(self):
         name = self.get_argument('username')
@@ -101,7 +105,8 @@ class registerHandler(tornado.web.RequestHandler):
         res = ud.user_exist(name)
         if res:  # user exists
             username = self.get_cookie('stuID')
-            self.render('register.html', same_name=True, cookie_name=username)
+            self.render('register.html', same_name=True, cookie_name=username,
+                        messages=[])
         else:
             ud.insert(name, password, njuid, 'stu')
             ui.insert(name, '', '', '', '', '')
@@ -228,7 +233,7 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
                    time.strftime('%Y-%m-%d %H:%M:%S'),
                    homework_id, filepath, 'submitted')
         # title is ''
-        
+
         self.render('eggs.html', cookie_name=username,
                     messages=md.fetch_message(username))
 
