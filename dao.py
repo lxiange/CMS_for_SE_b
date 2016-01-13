@@ -215,6 +215,24 @@ class MessageDao(DaoBase):
     def __init__(self, arg):
         super(MessageDao, self).__init__(arg)
 
+    def fetch_message(self, receiver_name):
+        self.cur.execute(
+            "SELECT * FROM message WHERE receiver_name = ? or receiver_name = ?", (receiver_name, 'ALL'))
+        res = self.cur.fetchall()
+        return res
+
+    def insert(self, *args):
+        try:
+            self.cur.execute("INSERT INTO message (sender_name, receiver_name, title, content, date_)"
+                             "VALUES (?, ?, ?, ?, ?)", args)
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
 
 class AnnouncementDao(DaoBase):
     """docstring for AnnouncementDao"""
@@ -226,7 +244,7 @@ class AnnouncementDao(DaoBase):
         '''fetch the announcement of _date
             TODO(lxiange): select announcement by date is useless...
         '''
-        self.cur.execute("SELECT * FROM announcement where date_ = ?", (date_,))
+        self.cur.execute("SELECT * FROM announcement WHERE date_ = ?", (date_,))
         res = self.cur.fetchone()
         return res
 
@@ -314,18 +332,18 @@ class SubmissionDao(DaoBase):
 
     def fetch(self, username):
         '''fetch someone's submission return a list of dict'''
-        self.cur.execute("SELECT * FROM submission where author=?", (username,))
+        self.cur.execute("SELECT * FROM submission WHERE author=?", (username,))
         res = self.cur.fetchall()
         return res
 
     def fetch_by_homework_id(self, homework_id):
-        self.cur.execute("SELECT * FROM submission where homework_id = ?",
+        self.cur.execute("SELECT * FROM submission WHERE homework_id = ?",
                          (homework_id,))
         res = self.cur.fetchall()
         return res
 
     def fetch_one_submission(self, username, homework_id):
-        self.cur.execute("SELECT * FROM submission where author = ? and homework_id = ?",
+        self.cur.execute("SELECT * FROM submission WHERE author = ? and homework_id = ?",
                          (username, homework_id))
         res = self.cur.fetchone()
         return res
@@ -404,6 +422,8 @@ class AdminDao(DaoBase):
         self.cur.execute(
             "SELECT user_type FROM user WHERE username = ?", (username,))
         res = self.cur.fetchone()
+        if not res:
+            return False
         if res[0] in ['root', 'admin', 'TA']:
             # TODO(lxiange): res['user_type']
             return True
@@ -416,12 +436,10 @@ class AdminDao(DaoBase):
         ui.delete(username)
 
     def set_TA(self, username):
-        ud.update(username,{'user_type':'TA'})
-
+        ud.update(username, {'user_type': 'TA'})
 
     def post_announcement(self, *args, **kw):
         '''post_announcement'''
-
 
     def delete_announcement(self, username):
         '''delete_announcement'''
@@ -436,6 +454,7 @@ adm = AdminDao('data.db3')
 hd = HomeworkDao('data.db3')
 sbd = SubmissionDao('data.db3')
 rd = ResourceDao('data.db3')
+md = MessageDao('data.db3')
 
 if __name__ == '__main__':
     print(ui.fetch_all())

@@ -15,6 +15,7 @@ from dao import adm
 from dao import hd
 from dao import sbd
 from dao import rd
+from dao import md
 
 # TODO: split this file
 
@@ -27,6 +28,21 @@ class logoutHandler(tornado.web.RequestHandler):
         self.redirect('/')
 
 
+class messageHandler(tornado.web.RequestHandler):
+    """docstring for messageHandler"""
+
+    def post(self):
+        username = self.get_cookie('stuID')
+        if not username:
+            self.redirect('/error')
+
+        recevier_name = self.get_argument('receiver_name')
+        content = self.get_argument('message_content')
+        md.insert(username, recevier_name, '', content,
+                  time.strftime('%Y-%m-%d %H:%M:%S'))
+        self.redirect('/')
+
+
 class indexHandler(tornado.web.RequestHandler):
 
     def get(self):
@@ -34,7 +50,8 @@ class indexHandler(tornado.web.RequestHandler):
         self.render('index.html',
                     cookie_name=username,
                     is_admin=adm.is_admin(username),
-                    announcements=ad.fetch_all())
+                    announcements=ad.fetch_all(),
+                    messages=md.fetch_message(username))
 
     def post(self):
         '''login'''
@@ -103,6 +120,7 @@ class settingHandler(tornado.web.RequestHandler):
             cookie_name=username,
             is_admin=adm.is_admin(username),
             njuid=njuid,
+            messages=md.fetch_message(username),
             **info_dict
         )
 
@@ -168,7 +186,8 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
         self.render('submit_homework.html', cookie_name=username,
                     is_admin=adm.is_admin(username),
                     homework_info=homework_info,
-                    status=status)
+                    status=status,
+                    messages=md.fetch_message(username))
 
     def post(self):
         username = self.get_cookie('stuID')
@@ -206,7 +225,8 @@ class announcementHandler(tornado.web.RequestHandler):
             self.redirect('/error')
 
         self.render('announcement.html', cookie_name=username,
-                    is_admin=adm.is_admin(username))
+                    is_admin=adm.is_admin(username),
+                    messages=md.fetch_message(username))
 
     def post(self):
         '''only admin can post'''
@@ -253,13 +273,15 @@ class homeworkHandler(tornado.web.RequestHandler):
                         homework_list=homework_list,
                         is_admin=adm.is_admin(username),
                         status_dict=status_dict,
-                        enable_submit=enable_submit)
+                        enable_submit=enable_submit,
+                        messages=md.fetch_message(username))
 
         if para == 'assign':
             if not adm.is_admin(username):
                 self.redirect('/error')
             self.render('assign_homework.html', cookie_name=username,
-                        is_admin=adm.is_admin(username))
+                        is_admin=adm.is_admin(username),
+                        messages=md.fetch_message(username))
 
         if para == 'delete':
             if not adm.is_admin(username):
@@ -301,7 +323,8 @@ class resourceHandler(tornado.web.RequestHandler):
 
         self.render('resource.html', cookie_name=username,
                     is_admin=adm.is_admin(username),
-                    resource_list=resource_list)
+                    resource_list=resource_list,
+                    messages=md.fetch_message(username))
 
 
 class downloadHandler(tornado.web.RequestHandler):
@@ -351,7 +374,8 @@ class uploadResourceHandler(tornado.web.RequestHandler):
             self.redirect('/error')
 
         self.render('upload_resource.html', cookie_name=username,
-                    is_admin=adm.is_admin(username))
+                    is_admin=adm.is_admin(username),
+                    messages=md.fetch_message(username))
 
     def post(self):
         username = self.get_cookie('stuID')
@@ -388,7 +412,8 @@ class errorHandler(tornado.web.RequestHandler):
 
     def get(self):
         username = self.get_cookie('stuID')
-        self.render('error.html', cookie_name=username)
+        self.render('error.html', cookie_name=username,
+                    messages=md.fetch_message(username))
 
     def post(self):
         self.redirect('/error')
@@ -404,7 +429,8 @@ class memberHandler(tornado.web.RequestHandler):
         user_info_list = ui.fetch_member_info()
         self.render('member.html', cookie_name=username,
                     is_admin=adm.is_admin(username),
-                    user_info_list=user_info_list)
+                    user_info_list=user_info_list,
+                    messages=md.fetch_message(username))
 
     def post(self):
         username = self.get_cookie('stuID')

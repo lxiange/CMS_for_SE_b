@@ -18,7 +18,7 @@ cur.execute('CREATE TABLE IF NOT EXISTS\
                  njuid VARCHAR(20),\
                  user_type VARCHAR(32))')
 cur.execute("INSERT INTO user VALUES (1000,'root','root','131220088','root')")
-cur.execute("INSERT INTO user VALUES (1000,'lxiange','lxiange','131220088','stu')")
+cur.execute("INSERT INTO user VALUES (1001, 'lxiange','lxiange','131220088','stu')")
 
 
 cur.execute("CREATE TABLE article(\
@@ -85,6 +85,16 @@ cur.execute("CREATE TABLE resource (\
 cur.execute("INSERT INTO resource VALUES (?, ?, ?, ?, ?, ?)",
             (1000, 'root', 'first resource', 'this is the first resource', '2013-01-08 23:57:32', ''))
 
+cur.execute("CREATE TABLE message (\
+            message_id INTEGER PRIMARY KEY AUTOINCREMENT,\
+            sender_name VARCHAR(128),\
+            receiver_name VARCHAR(128),\
+            title VARCHAR(256),\
+            content VARCHAR(220000),\
+            date_ VARCHAR(100))")
+
+cur.execute("INSERT INTO message VALUES (?, ?, ?, ?, ?, ?)",
+            (1000, 'lxiange', 'root', '', 'fuck you', '2013-01-08 23:57:32'))
 
 conn.commit()
 conn.close()

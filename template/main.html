@@ -87,6 +87,7 @@
     </div>
     {%end%}
 </footer>
+
   <!-- logoutModal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -105,6 +106,7 @@
         </div>
     </div>
 </div>
+        
 <!-- Message Modal -->
 <div class="modal fade" id="messageModal" role="dialog">
     <div class="modal-dialog">
@@ -115,7 +117,7 @@
             </div>
             <div class="modal-body">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#publicdiv" data-toggle="tab"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;公告</a></li>
+                        <li class="active"><a href="#publicdiv" data-toggle="tab"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;群邮件</a></li>
                         <li><a href="#privatediv" data-toggle="tab"><span class="glyphicon glyphicon-inbox"></span>&nbsp;收件箱</a></li>
                         <li><a href="#newmsgdiv" data-toggle="tab"><span class="glyphicon glyphicon-envelope"></span>&nbsp;发送私信</a></li>
                     </ul>
@@ -126,18 +128,27 @@
                                 <thead>
                                     <colgroup>
                                         <col width='30%'></col>
-                                        <col width='70%'></col>
+                                        <col width='50%'></col>
+                                        <col width='20%'></col>
                                     </colgroup>
                                     <tr>
                                         <th><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;时间</th>
                                         <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;内容</th>
+                                        <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;发布人</th>
+                                        <!-- TODO：把发件人这个图标换了 -->
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {%for msg in messages%}
+                                    {%if msg['receiver_name']=='ALL'%}
                                     <tr>
-                                        <td>2016/1/13 13:15</td>
-                                        <td>这里是内容</td>
+                                        <td>{{msg['date_']}}</td>
+                                        <td>{{msg['content']}}</td>
+                                        <td>{{msg['sender_name']}}</td>
                                     </tr>
+                                    {%end%}
+                                    {%end%}
+
                                 </tbody>
                             </table>
                         </div>
@@ -146,36 +157,42 @@
                                 <thead>
                                     <colgroup>
                                         <col width='30%'></col>
-                                        <col width='60%'></col>
-                                        <col width='10%'></col>
+                                        <col width='50%'></col>
+                                        <col width='20%'></col>
                                     </colgroup>
                                     <tr>
                                         <th><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;时间</th>
                                         <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;内容</th>
-                                        <th>操作</th>
+                                        <th><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;发件人</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    {%for msg in messages%}
+                                    {%if msg['receiver_name']!='ALL'%}
                                     <tr>
-                                        <td>2016/1/13 13:16</td>
-                                        <td>这里是内容</td>
-                                        <td><a href="#"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                        <td>{{msg['date_']}}</td>
+                                        <td>{{msg['content']}}</td>
+                                        <td>{{msg['sender_name']}}</td>
                                     </tr>
+                                    {%end%}
+                                    {%end%}
+
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="newmsgdiv">
-                           <form id="newmsgform" action='' method='post' class='form-horizontal'>
+                           <form id="newmsgform" action='/message' method='post' class='form-horizontal'>
                                 <div class='form-group'>
                                     <label class='col-md-2 control-label'>收件人</label>
                                     <div class='col-md-9'>
-                                        <input type='text' name='receiver' class='form-control' required>
+                                        <input type='text' name='receiver_name' class='form-control' required>
                                     </div>
                                 </div>
                                 <div class='form-group'>
                                     <label class='col-md-2 control-label'>内容</label>
                                     <div class='col-md-9'>
-                                        <textarea rows='5' type='text' name='messagecontent' class='form-control ' placeholder='键入内容' maxlength='100' required></textarea>
+                                        <textarea rows='5' type='text' name='message_content' class='form-control ' placeholder='键入内容' maxlength='100' required></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
