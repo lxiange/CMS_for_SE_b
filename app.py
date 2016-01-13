@@ -23,8 +23,9 @@ class MyApp(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r'/', indexHandler),
-            (r'/member',memberHandler),
-            # (r'/chat/(\d+)',chatHandler),
+            (r'/member', memberHandler),
+            (r'/about', aboutHandler),
+            # (r'/eggs',eggsHandler),
             (r'/register', registerHandler),        # DONE
             (r'/logout', logoutHandler),            # DONE
             (r'/setting', settingHandler),          # DONE

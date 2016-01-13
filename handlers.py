@@ -28,6 +28,21 @@ class logoutHandler(tornado.web.RequestHandler):
         self.redirect('/')
 
 
+class aboutHandler(tornado.web.RequestHandler):
+    """docstring for aboutHandler"""
+    def get(self):
+        username = self.get_cookie('stuID')
+        self.render('error.html', cookie_name=username,
+                    messages=md.fetch_message(username))
+
+class eggsHandler(tornado.web.RequestHandler):
+    """docstring for eggHandler"""
+    def get(self):
+        username = self.get_cookie('stuID')
+        self.render('eggs.html', cookie_name=username,
+                    messages=md.fetch_message(username))
+
+
 class messageHandler(tornado.web.RequestHandler):
     """docstring for messageHandler"""
 
@@ -213,7 +228,9 @@ class submitHomeworkHandler(tornado.web.RequestHandler):
                    time.strftime('%Y-%m-%d %H:%M:%S'),
                    homework_id, filepath, 'submitted')
         # title is ''
-        self.redirect('/homework/view')
+        
+        self.render('eggs.html', cookie_name=username,
+                    messages=md.fetch_message(username))
 
 
 class announcementHandler(tornado.web.RequestHandler):
