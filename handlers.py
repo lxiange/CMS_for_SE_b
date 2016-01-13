@@ -86,7 +86,7 @@ class settingHandler(tornado.web.RequestHandler):
             self.redirect('/error')
 
         userinfo = ui.fetch(username)
-        info_args = ['username', 'sex', 'email', 'birthday', 'mobile', 'self_intro']
+        info_args = ['username', 'sex', 'email', 'truename', 'mobile', 'self_intro']
         info_dict = {}
         for item in info_args:
             try:
@@ -95,10 +95,12 @@ class settingHandler(tornado.web.RequestHandler):
                 print(e)
                 info_dict[item] = ''
 
+        njuid = ud.fetch(username)['njuid']
         self.render(
             'setting.html',
             cookie_name=username,
             is_admin=adm.is_admin(username),
+            njuid=njuid,
             **info_dict
         )
 
@@ -109,7 +111,7 @@ class settingHandler(tornado.web.RequestHandler):
         if not username:
             self.redirect('/error')
 
-        info_args = ['sex', 'email', 'birthday', 'mobile', 'self_intro']
+        info_args = ['sex', 'email', 'truename', 'mobile', 'self_intro']
         info_dict = {}
         for item in info_args:
             try:

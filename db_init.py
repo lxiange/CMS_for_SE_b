@@ -44,7 +44,7 @@ cur.execute("CREATE TABLE user_info (\
                 username VARCHAR(32),\
                 sex VARCHAR(16),\
                 email VARCHAR(128),\
-                birthday VARCHAR(128),\
+                truename VARCHAR(128),\
                 mobile VARCHAR(20),\
                 self_intro VARCHAR(100000))")
 cur.execute("INSERT INTO user_info VALUES (?, ?, ?, ?, ?, ?)",

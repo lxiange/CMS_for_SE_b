@@ -76,7 +76,7 @@ class UserInfo(DaoBase):
     def insert(self, *args):
         try:
             self.cur.execute("INSERT INTO user_info "
-                             "(username, sex, email, birthday, mobile, self_intro)"
+                             "(username, sex, email, truename, mobile, self_intro)"
                              "VALUES (?, ?, ?, ?, ?, ?)", args)
             return True
         except Exception as e:

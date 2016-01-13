@@ -25,14 +25,15 @@
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>学号*</label>
                     <div class='col-md-9'>
-                        <input type='text' name='njuid' class='form-control' required>
+                        <!-- <input type='text' name='njuid' class='form-control' required> -->
+                        <h5><strong><p class="text-info"> {%if njuid%}{{njuid}}{%end%} </p></strong></h5>
                     </div>
                 </div>
-                <!-- FIXME(lxiange): 未处理真实姓名表单，注意name='truename' -->
+
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>真实姓名*</label>
                     <div class='col-md-9'>
-                        <input type='text' name='truename' class='form-control' required>
+                        <input type='text' name='truename' class='form-control' required {%if truename%}value="{{truename}}"{%end%}>
                     </div>
                 </div>
 <!--                 <div class='form-group'>
@@ -54,15 +55,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class='form-group'>
-                    <label class='col-md-3 control-label'>出生日期</label>
-                    <div class="col-md-9">
-                        <div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd">
-                            <input id="datepicker" type='text' name='birth' class="form-control" {%if birthday%} value="{{birthday}}" {%end%} size='16'>
-                            <span id="datepickerBtn" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-                </div> -->
                 <div class='form-group'>
                     <label class='col-md-3 control-label'>手机号码*</label>
                     <div class='col-md-9'>
