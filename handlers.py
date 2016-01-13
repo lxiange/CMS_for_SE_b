@@ -221,6 +221,7 @@ class homeworkHandler(tornado.web.RequestHandler):
         if para == 'view':
             homework_list = hd.fetch_all()
             status_dict = {}
+            enable_submit = {}   # True or False
             for hw in homework_list:
                 hw_id = hw['homework_id']
                 assert hw_id
@@ -230,10 +231,17 @@ class homeworkHandler(tornado.web.RequestHandler):
                 else:
                     status_dict[hw_id] = submission['status']
                     assert status_dict[hw_id] != 'notsubmit'
+
+                ddl = time.mktime(time.strptime(hw['deadline'], '%Y-%m-%d %H:%M:%S'))
+                now = time.mktime(time.localtime())
+                is_enable = now - ddl < 0
+                enable_submit[hw_id] = is_enable
+
             self.render('homework.html', cookie_name=username,
                         homework_list=homework_list,
                         is_admin=adm.is_admin(username),
-                        status_dict=status_dict)
+                        status_dict=status_dict,
+                        enable_submit=enable_submit)
 
         if para == 'assign':
             if not adm.is_admin(username):

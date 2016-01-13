@@ -96,7 +96,12 @@
 
                                         {% if not is_admin %}
                                             {% if status_dict[hw['homework_id']] == 'notsubmit' %}
+                                                {%if enable_submit[hw['homework_id']]%}
                                                 <a href="/submit_homework?hw_id={{hw['homework_id']}}" class='col-sm-offset-10 btn btn-success'> 现在上传 <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                                {%else%}
+                                                Sorry, time is up... You can't submit anymore...
+                                                <!-- TODO: 可以处理地更优雅一点~~~ -->
+                                                {%end%}
                                             {%end%}
                                             {% if status_dict[hw['homework_id']] != 'notsubmit' %}
                                                 <a href="/submit_homework?hw_id={{hw['homework_id']}}" class="col-sm-offset-10 btn btn-info"> 查看作业详情 <span class="glyphicon glyphicon-chevron-right"></span></a>
