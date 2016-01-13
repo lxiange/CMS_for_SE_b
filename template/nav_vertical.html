@@ -5,6 +5,12 @@
     <li {% if request.path == '/homework/view' %} class="active"{% end %}><a href="/homework/view"><span class="glyphicon glyphicon-paperclip"></span> 查看作业</a></li>
     <li {% if request.path == '/resource' %} class="active"{% end %}><a href="/resource"><span class="glyphicon glyphicon-file"></span> 下载资源</a></li>
     {% end%}
+    {%if not cookie_name%}
+            <div class="alert alert-warning fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>登陆之后才可以查看作业、资源。</strong>
+            </div>
+    {%end%}
     {% if is_admin%}
       <li class="dropdown">
         <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> 老师/助教操作 <span class="caret"></span></a>

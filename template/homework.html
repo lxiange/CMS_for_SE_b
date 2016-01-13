@@ -17,7 +17,7 @@
                         <div class="panel-heading">
                             <div class="panel-title">
                                 <a data-toggle="collapse" href={{"#homework_collapse"+str(hw['homework_id'])}}>
-                                    {{hw['title']}}
+                                    <span class="glyphicon glyphicon-paperclip"></span> {{hw['title']}}
                                     {%if not is_admin%}
                                         {% if status_dict[hw['homework_id']] == 'notsubmit' %}<span class="label label-danger">未提交!</span>{%end%}
                                         {% if status_dict[hw['homework_id']] == 'submitted' %}<span class="label label-success">已提交待评分</span>{%end%}
