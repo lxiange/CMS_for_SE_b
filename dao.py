@@ -243,6 +243,17 @@ class HomeworkDao(DaoBase):
         res = self.cur.fetchone()
         return res[0]
 
+    def delete(self, homework_id):
+        try:
+            self.cur.execute("DELETE FROM homework WHERE homework_id = ?", (homework_id,))
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
 
 class SubmissionDao(DaoBase):
     """docstring for SubmissionDao

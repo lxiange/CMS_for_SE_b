@@ -1,5 +1,6 @@
 import time
 import os
+import shutil
 
 import tornado.httpserver
 import tornado.ioloop
@@ -240,6 +241,14 @@ class homeworkHandler(tornado.web.RequestHandler):
             self.render('assign_homework.html', cookie_name=username,
                         is_admin=adm.is_admin(username))
 
+        if para == 'delete':
+            if not adm.is_admin(username):
+                self.redirect('/error')
+            homework_id = int(self.get_argument('hw_id'))
+            hd.delete(homework_id)
+            shutil.rmtree(os.path.join('data', 'homework', 'hw_' + str(homework_id)))
+            self.redirect('/homework/view')
+
     def post(self, para):
         if para == 'view':
             self.redirect('/error')
@@ -257,7 +266,7 @@ class homeworkHandler(tornado.web.RequestHandler):
         homework_id = hd.get_last_id()
         # TODO: try catch
         os.mkdir(os.path.join('data', 'homework', 'hw_' + str(homework_id)))
-        self.redirect('/')
+        self.redirect('/homework/view')
 
 
 class resourceHandler(tornado.web.RequestHandler):
