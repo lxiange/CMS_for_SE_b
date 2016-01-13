@@ -110,7 +110,7 @@
                                         <!-- TODO(lxiange): 删除作业按钮的具体操作，“下载全部学生作业”这个功能是否需要，即将所有作业打包下载。而不是自己到电脑上看。 -->
                                         {%if is_admin%}
                                             <a href="/homework/delete?hw_id={{hw['homework_id']}}" class="pull-right btn btn-danger"> 删除作业 <span class="glyphicon glyphicon-trash"></span></a>
-                                            <a href="#" class="pull-right btn btn-success"> 下载全部学生作业 <span class="glyphicon glyphicon-cloud-download"></span></a>
+                                            <a href="/download/homework?hw_id={{hw['homework_id']}}" class="pull-right btn btn-success"> 下载全部学生作业 <span class="glyphicon glyphicon-cloud-download"></span></a>
                                         {%end%}
 
                                     </div>

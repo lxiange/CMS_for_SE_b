@@ -1,6 +1,7 @@
 import time
 import os
 import shutil
+import zipfile
 
 import tornado.httpserver
 import tornado.ioloop
@@ -316,11 +317,29 @@ class downloadHandler(tornado.web.RequestHandler):
             data_id = int(self.get_argument('res_id'))
             data = rd.fetch_by_id(data_id)
 
-        self.set_header('Content-Type', 'application/octet-stream')
-        filename = os.path.basename(data['file_path'])
-        self.set_header('Content-Disposition', 'attachment; filename=' + filename)
-        with open(data['file_path'], 'rb') as f:
-            self.write(f.read())
+            self.set_header('Content-Type', 'application/octet-stream')
+            filename = os.path.basename(data['file_path'])
+            self.set_header('Content-Disposition',
+                            'attachment; filename=' + filename)
+            with open(data['file_path'], 'rb') as f:
+                self.write(f.read())
+
+        if para == 'homework':
+            # TODO: find a better way to download zip file
+            if not adm.is_admin(username):
+                self.redirect('/error')
+            homework_id = int(self.get_argument('hw_id'))
+            self.set_header('Content-Type', 'application/octet-stream')
+            self.set_header('Content-Disposition',
+                            'attachment; filename=hw_' + str(homework_id) + '.zip')
+            zfile = zipfile.ZipFile('temp.zip', 'w')
+            startdir = './data/homework/hw_' + str(homework_id)
+            for dirpath, dirnames, filenames in os.walk(startdir):
+                for filename in filenames:
+                    zfile.write(os.path.join(dirpath, filename))
+            zfile.close()
+            with open('temp.zip', 'rb') as f:
+                self.write(f.read())
 
 
 class uploadResourceHandler(tornado.web.RequestHandler):
