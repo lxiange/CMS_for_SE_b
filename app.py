@@ -28,7 +28,7 @@ class MyApp(tornado.web.Application):
             (r'/register', registerHandler),        # DONE
             (r'/logout', logoutHandler),            # DONE
             (r'/setting', settingHandler),          # DONE
-            (r'/manage', manageHandler),
+            (r'/manage/(\w+)', manageHandler),
             (r'/homework/(\w+)', homeworkHandler),
             (r'/submit_homework', submitHomeworkHandler),
             (r'/upload_resource', uploadResourceHandler),

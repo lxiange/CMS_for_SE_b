@@ -37,10 +37,12 @@
                                             <div class="action-buttons">
                                                 {%if is_admin%}
                                                 <!-- TODO(lxiange): 添加设置助教以及删除操作 -->
-                                                <!-- FIXME(lxiange): 通过注册功能是否容易实现？ -->
-                                                <a href="#"><span class="glyphicon glyphicon-ok"></span></a>&nbsp;&nbsp;
-                                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;&nbsp;
-                                                <a href="#">助教</a>
+                                                {%if user_info['user_type'] not in ['root', 'admin', 'TA']%}
+                                                <a href="/manage/add_admin?username={{user_info['username']}}"><span class="glyphicon glyphicon-ok"></span>&nbsp;设为管理员</a>&nbsp;&nbsp;
+                                                {%else%}
+                                                管理员
+                                                {%end%}
+                                                <a href="/manage/delete_user?username={{user_info['username']}}"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;&nbsp;
                                                 {%end%}
                                             </div>
                                         </td>{%end%}

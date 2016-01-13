@@ -66,12 +66,52 @@ class UserDao(DaoBase):
         res = self.cur.fetchall()
         return res
 
+    def delete(self, username):
+        # TODO: this delete is by username
+        try:
+            self.cur.execute("DELETE FROM user WHERE username = ?", (username,))
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
+
+    def update(self, username, info_dict):
+        try:
+            for k, v in info_dict.items():
+                print("UPDATE user SET %s = %s WHERE username = %s" %
+                      (k, v, username))
+                self.cur.execute("UPDATE user SET {} = ? WHERE username = ?".format(k),
+                                 (v, username))
+            return True
+
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+
+        finally:
+            self.conn.commit()
+
 
 class UserInfo(DaoBase):
     """docstring for UserInfo"""
 
     def __init__(self, arg):
         super(UserInfo, self).__init__(arg)
+
+    def delete(self, username):
+        try:
+            self.cur.execute("DELETE FROM user_info WHERE username = ?", (username,))
+            return True
+        except Exception as e:
+            print(e)
+            assert 0
+            return False
+        finally:
+            self.conn.commit()
 
     def insert(self, *args):
         try:
@@ -94,6 +134,13 @@ class UserInfo(DaoBase):
 
     def fetch_all(self):
         self.cur.execute("SELECT * FROM user_info")
+        res = self.cur.fetchall()
+        return res
+
+    def fetch_member_info(self):
+        self.cur.execute("SELECT user.username, user.user_id, user.user_type, user.njuid, user_info.email, user_info.mobile "
+                         "FROM user, user_info "
+                         "WHERE user.username = user_info.username")
         res = self.cur.fetchall()
         return res
 
@@ -244,8 +291,10 @@ class HomeworkDao(DaoBase):
         return res[0]
 
     def delete(self, homework_id):
+        # TODO: this delete is by id
         try:
-            self.cur.execute("DELETE FROM homework WHERE homework_id = ?", (homework_id,))
+            self.cur.execute(
+                "DELETE FROM homework WHERE homework_id = ?", (homework_id,))
             return True
         except Exception as e:
             print(e)
@@ -344,7 +393,7 @@ class ResourceDao(DaoBase):
 
 
 class AdminDao(DaoBase):
-    """docstring for AdminDao"""
+    """May be we should integrate privileged operations"""
 
     def __init__(self, arg):
         super(AdminDao, self).__init__(arg)
@@ -361,11 +410,18 @@ class AdminDao(DaoBase):
         else:
             return False
 
+    def delete_user(self, username):
+        # TODO: delete anything about this user. such as homework, submission.
+        ud.delete(username)
+        ui.delete(username)
+
+    def set_TA(self, username):
+        ud.update(username,{'user_type':'TA'})
+
+
     def post_announcement(self, *args, **kw):
         '''post_announcement'''
 
-    def delete_user(self, username):
-        '''delete_user'''
 
     def delete_announcement(self, username):
         '''delete_announcement'''

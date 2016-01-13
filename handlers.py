@@ -128,8 +128,19 @@ class settingHandler(tornado.web.RequestHandler):
 class manageHandler(tornado.web.RequestHandler):
     '''handler for admin to manage'''
 
-    def get(self):
-        pass
+    # not well, should use post instead.
+    def get(self, para):
+        username = self.get_cookie('stuID')
+        if not adm.is_admin(username):
+            self.redirect('/error')
+
+        if para == 'add_admin':
+            adm.set_TA(self.get_argument('username'))
+            self.redirect('/member')
+
+        if para == 'delete_user':
+            adm.delete_user(self.get_argument('username'))
+            self.redirect('/member')
 
 
 class submitHomeworkHandler(tornado.web.RequestHandler):
@@ -371,7 +382,7 @@ class memberHandler(tornado.web.RequestHandler):
         if not username:
             self.redirect('/error')
 
-        user_info_list = ui.fetch_user_info()
+        user_info_list = ui.fetch_member_info()
         self.render('member.html', cookie_name=username,
                     is_admin=adm.is_admin(username),
                     user_info_list=user_info_list)

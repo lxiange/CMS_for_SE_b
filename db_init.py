@@ -18,6 +18,7 @@ cur.execute('CREATE TABLE IF NOT EXISTS\
                  njuid VARCHAR(20),\
                  user_type VARCHAR(32))')
 cur.execute("INSERT INTO user VALUES (1000,'root','root','131220088','root')")
+cur.execute("INSERT INTO user VALUES (1000,'lxiange','lxiange','131220088','stu')")
 
 
 cur.execute("CREATE TABLE article(\
